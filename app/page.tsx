@@ -56,7 +56,17 @@ export default function Home() {
   );
 }
 
-function NavButton({ icon, label, active = false, center = false }) {
+function NavButton({
+  icon,
+  label,
+  active = false,
+  center = false,
+}: {
+  icon: string;
+  label: string;
+  active?: boolean;
+  center?: boolean;
+}) {
   return (
     <div className={`flex flex-col items-center text-xs ${center ? 'scale-125' : ''}`}>
       <div className={`text-xl ${active ? 'text-blue-400' : ''}`}>{icon}</div>

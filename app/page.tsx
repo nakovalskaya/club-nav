@@ -1,26 +1,54 @@
-'use client'
-
-import { useEffect } from 'react'
+'use client';
+import { useEffect } from 'react';
 
 export default function Home() {
   useEffect(() => {
-    // @ts-ignore
     if (typeof window !== 'undefined' && window.Telegram && window.Telegram.WebApp) {
-      // @ts-ignore
       window.Telegram.WebApp.ready();
     }
-  }, [])
+  }, []);
 
   return (
-    <main className="bg-black text-white min-h-screen p-6">
-      <h1 className="text-2xl font-bold mb-6">Навигация клуба</h1>
+    <main className="min-h-screen bg-black text-white font-sans p-4">
+      {/* Карточка */}
+      <div className="bg-[#EFE0BF] text-black rounded-2xl p-4 mb-20">
+        <img
+          src="/cover.jpg"
+          alt="Ноль справа"
+          className="w-full rounded-2xl mb-4"
+        />
+        <p className="text-sm leading-snug mb-4">
+          Приглашаю вас на мою авторскую программу для предпринимателей о том, как масштабировать бизнес
+        </p>
+        <p className="font-bold text-base mb-4">Длительность<br />2 месяца</p>
+        <a
+  href="https://t.me/nakovalskaa/470"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-black text-white rounded-xl py-2 px-4 font-semibold block text-center"
+>
+  Оставить заявку
+</a>
 
-      <div className="space-y-4">
-        <div className="bg-gray-800 rounded-xl p-4">📚 Эфиры</div>
-        <div className="bg-gray-800 rounded-xl p-4">📁 Материалы</div>
-        <div className="bg-gray-800 rounded-xl p-4">✅ Пройденное</div>
-        <div className="bg-gray-800 rounded-xl p-4">⭐ Избранное</div>
       </div>
+
+      {/* Нижняя навигация */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#0A1A1A] flex justify-around items-center p-2">
+        <NavButton icon="▶️" label="Видео" active />
+        <NavButton icon="📍" label="События" />
+        <NavButton icon="👤" label="Главная" center />
+        <NavButton icon="🤍" label="Польза" />
+        <NavButton icon="➕" label="Пойнты" />
+      </nav>
     </main>
-  )
+  );
+}
+
+function NavButton({ icon, label, active = false, center = false }) {
+  return (
+    <div className={`flex flex-col items-center text-xs ${center ? 'scale-125' : ''}`}>
+      <div className={`text-xl ${active ? 'text-blue-400' : ''}`}>{icon}</div>
+      <div className={active ? 'text-blue-400' : ''}>{label}</div>
+    </div>
+  );
 }

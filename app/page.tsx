@@ -1,9 +1,20 @@
 'use client';
 import { useEffect } from 'react';
 
+// ✅ Добавляем расширение глобального объекта window
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        ready: () => void;
+      };
+    };
+  }
+}
+
 export default function Home() {
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.Telegram && window.Telegram.WebApp) {
+    if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
       window.Telegram.WebApp.ready();
     }
   }, []);
@@ -20,16 +31,17 @@ export default function Home() {
         <p className="text-sm leading-snug mb-4">
           Приглашаю вас на мою авторскую программу для предпринимателей о том, как масштабировать бизнес
         </p>
-        <p className="font-bold text-base mb-4">Длительность<br />2 месяца</p>
+        <p className="font-bold text-base mb-4">
+          Длительность<br />2 месяца
+        </p>
         <a
-  href="https://t.me/nakovalskaa/470"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="bg-black text-white rounded-xl py-2 px-4 font-semibold block text-center"
->
-  Оставить заявку
-</a>
-
+          href="https://t.me/nakovalskaa/470"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-black text-white rounded-xl py-2 px-4 font-semibold block text-center"
+        >
+          Оставить заявку
+        </a>
       </div>
 
       {/* Нижняя навигация */}

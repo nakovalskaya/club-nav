@@ -12,7 +12,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-black flex justify-around items-center h-32 z-50">
+    <nav className="fixed bottom-0 left-0 w-full bg-black h-28 z-50 px-2 pt-1 pb-5 flex justify-around items-end">
       {links.map(({ label, href, icon }) => {
         const isActive = currentPath === href;
 
@@ -24,10 +24,10 @@ export default function BottomNav() {
               isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'
             }`}
           >
-            <div className="relative w-12 h-12 flex items-center justify-center transition-all duration-300 ease-in-out">
+            <div className="relative w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out">
               {/* Палочка сверху */}
               <div
-                className={`absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-2 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
+                className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-5 h-1.5 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
                   isActive ? 'opacity-100' : 'opacity-0'
                 }`}
               ></div>
@@ -41,7 +41,7 @@ export default function BottomNav() {
 
               {/* Светящаяся аура снизу */}
               <div
-                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-14 h-6 bg-[#991428]/20 rounded-full blur-xl z-0 transition-opacity duration-300 ease-in-out ${
+                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-10 h-5 bg-[#991428]/20 rounded-full blur-xl z-0 transition-opacity duration-300 ease-in-out ${
                   isActive ? 'opacity-100' : 'opacity-0'
                 }`}
               ></div>
@@ -57,7 +57,7 @@ export default function BottomNav() {
                 }`}
               />
             </div>
-            <span className="mt-0.5 transition-all duration-300 ease-in-out">{label}</span>
+            <span className="mt-[2px] transition-all duration-300 ease-in-out">{label}</span>
           </a>
         );
       })}

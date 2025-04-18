@@ -13,7 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white font-sans flex justify-center">
       <main className="w-full px-4 py-6">
         {/* Сетка из 4 карточек */}
-        <div className="grid grid-cols-2 gap-1 mb-4 -mt-4">
+        <div className="grid grid-cols-2 gap-1 mb-4 -mt-1">
           <a href="/efiry" className="rounded-xl overflow-hidden h-[110px]">
             <img src="/efiry.jpg" alt="Эфиры" className="w-full h-full object-cover" />
           </a>

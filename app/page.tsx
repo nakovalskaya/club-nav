@@ -13,7 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white font-sans flex justify-center">
       <main className="w-full px-4 py-6">
         {/* Заголовок-картинка */}
-        <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-24 mb-6" />
+        <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-28 mt-1 mb-8" />
 
         {/* Сетка из 4 карточек */}
         <div className="grid grid-cols-2 gap-1 mb-4 -mt-4">

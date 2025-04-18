@@ -12,44 +12,44 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-sans px-4 py-6">
       {/* Заголовок-картинка */}
-      <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-48 mb-6" />
+      <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-24 mb-6" />
 
-      {/* Сетка из 4 карточек */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        <a href="/efiry" className="rounded-xl overflow-hidden">
-          <img src="/efiry.jpg" alt="Эфиры" className="w-full object-cover" />
-        </a>
-        <a href="/podcasty" className="rounded-xl overflow-hidden">
-          <img src="/podcasty.jpg" alt="Подкасты" className="w-full object-cover" />
-        </a>
-        <a href="/kursy" className="rounded-xl overflow-hidden">
-          <img src="/kursy.jpg" alt="Курсы" className="w-full object-cover" />
-        </a>
-        <a href="/gidy" className="rounded-xl overflow-hidden">
-          <img src="/gidy.jpg" alt="Гиды" className="w-full object-cover" />
-        </a>
-      </div>
+{/* Сетка из 4 карточек */}
+<div className="grid grid-cols-2 gap-1 mb-4 -mt-4">
+  <a href="/efiry" className="rounded-xl overflow-hidden h-[110px]">
+    <img src="/efiry.jpg" alt="Эфиры" className="w-full h-full object-cover" />
+  </a>
+  <a href="/podcasty" className="rounded-xl overflow-hidden h-[110px]">
+    <img src="/podcasty.jpg" alt="Подкасты" className="w-full h-full object-cover" />
+  </a>
+  <a href="/kursy" className="rounded-xl overflow-hidden h-[110px]">
+    <img src="/kursy.jpg" alt="Курсы" className="w-full h-full object-cover" />
+  </a>
+  <a href="/gidy" className="rounded-xl overflow-hidden h-[110px]">
+    <img src="/gidy.jpg" alt="Гиды" className="w-full h-full object-cover" />
+  </a>
+</div>
 
-      {/* Разделы */}
-      <h2 className="text-lg font-semibold mb-2">Разделы</h2>
-      <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide">
-        {[
-          'воронки',
-          'продажи',
-          'instagram',
-          'telegram',
-          'threads',
-          'нейросети',
-          'reels'
-        ].map((item) => (
-          <button
-            key={item}
-            className="whitespace-nowrap border border-white rounded-full px-4 py-1 text-sm shrink-0"
-          >
-            {item}
-          </button>
-        ))}
-      </div>
+{/* Разделы */}
+<h2 className="text-lg font-semibold mb-2">Разделы</h2>
+<div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
+  {[
+    'воронки',
+    'продажи',
+    'instagram',
+    'telegram',
+    'threads',
+    'нейросети',
+    'reels'
+  ].map((item) => (
+    <button
+      key={item}
+      className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-4 py-1 text-sm shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
+    >
+      {item}
+    </button>
+  ))}
+</div>
     </main>
   );
 }

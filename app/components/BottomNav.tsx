@@ -6,9 +6,9 @@ export default function BottomNav() {
   const currentPath = usePathname();
 
   const links = [
-    { label: 'домой', href: '/', icon: '/icons/home.svg' },
-    { label: 'о клубе', href: '/about', icon: '/icons/about.svg' },
-    { label: 'избранное', href: '/favorites', icon: '/icons/star.svg' },
+    { label: 'Главная', href: '/', icon: '/icons/home.svg' },
+    { label: 'О клубе', href: '/about', icon: '/icons/about.svg' },
+    { label: 'Избранное', href: '/favorites', icon: '/icons/star.svg' },
   ];
 
   return (
@@ -20,7 +20,7 @@ export default function BottomNav() {
           <a
             key={label}
             href={href}
-            className={`flex flex-col items-center text-xs transition-all duration-300 ease-in-out ${
+            className={`flex flex-col items-center text-[10px] transition-all duration-300 ease-in-out ${
               isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'
             }`}
           >

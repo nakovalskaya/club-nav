@@ -12,7 +12,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-black flex justify-around items-center h-16 z-50 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 left-0 w-full bg-black flex justify-around items-center h-24 z-50">
       {links.map(({ label, href, icon }) => {
         const isActive = currentPath === href;
 

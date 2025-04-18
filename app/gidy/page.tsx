@@ -1,8 +1,14 @@
 'use client';
+import { useRouter } from 'next/navigation';
+
 export default function GidyPage() {
+  const router = useRouter();
+
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
-      <a href="/" className="text-[#EBDEC8] text-sm mb-4 inline-block">⬅ Назад</a>
+      <button onClick={() => router.back()} className="mb-4">
+        <img src="/back.svg" alt="Назад" className="w-7 h-7" />
+      </button>
       <p>Раздел пока в разработке...</p>
     </main>
   );

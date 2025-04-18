@@ -20,27 +20,44 @@ export default function BottomNav() {
           <a
             key={label}
             href={href}
-            className={`flex flex-col items-center text-xs text-[#EBDEC8] hover:text-white transition-all duration-200 ${
-              isActive ? 'text-white' : ''
+            className={`flex flex-col items-center text-xs transition-all duration-300 ease-in-out ${
+              isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'
             }`}
           >
-            <div className="relative w-12 h-12 flex items-center justify-center">
-              {isActive && (
-                <>
-                  {/* Палочка сверху */}
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-2 rounded-t-xl bg-[#991428] z-20"></div>
+            <div className="relative w-12 h-12 flex items-center justify-center transition-all duration-300 ease-in-out">
+              {/* Палочка сверху */}
+              <div
+                className={`absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-2 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
+                  isActive ? 'opacity-100' : 'opacity-0'
+                }`}
+              ></div>
 
-                  {/* Градиентная подсветка */}
-                  <div className="absolute inset-0 rounded-full blur-lg bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30"></div>
+              {/* Градиентная подсветка */}
+              <div
+                className={`absolute inset-0 rounded-full blur-lg bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30 transition-opacity duration-300 ease-in-out ${
+                  isActive ? 'opacity-100' : 'opacity-0'
+                }`}
+              ></div>
 
-                  {/* Светящаяся аура снизу */}
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-14 h-6 bg-[#991428]/20 rounded-full blur-xl z-0"></div>
-                </>
-              )}
+              {/* Светящаяся аура снизу */}
+              <div
+                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-14 h-6 bg-[#991428]/20 rounded-full blur-xl z-0 transition-opacity duration-300 ease-in-out ${
+                  isActive ? 'opacity-100' : 'opacity-0'
+                }`}
+              ></div>
 
-              <img src={icon} alt={label} className="w-5 h-5 relative z-10" />
+              {/* Иконка */}
+              <img
+                src={icon}
+                alt={label}
+                className={`w-5 h-5 relative z-10 transition-all duration-300 ease-in-out ${
+                  isActive
+                    ? 'filter brightness-0 invert sepia hue-rotate-[330deg] saturate-500'
+                    : ''
+                }`}
+              />
             </div>
-            <span className="mt-1">{label}</span>
+            <span className="mt-0.5 transition-all duration-300 ease-in-out">{label}</span>
           </a>
         );
       })}

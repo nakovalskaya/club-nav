@@ -25,3 +25,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+/* Скрытие горизонтального скроллбара */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* для IE и Edge */
+  scrollbar-width: none;    /* для Firefox */
+}

@@ -31,26 +31,26 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Разделы */}
-        <h2 className="text-lg font-semibold mb-2">Разделы</h2>
-        <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
-          {[
-            'воронки',
-            'продажи',
-            'instagram',
-            'telegram',
-            'threads',
-            'нейросети',
-            'reels'
-          ].map((item) => (
-            <button
-              key={item}
-              className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-4 py-1 text-sm shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
-            >
-              {item}
-            </button>
-          ))}
-        </div>
+{/* Разделы */}
+<h2 className="text-lg font-semibold mb-2">Разделы</h2>
+<div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide scroll-smooth">
+  {[
+    'воронки',
+    'продажи',
+    'instagram',
+    'telegram',
+    'threads',
+    'нейросети',
+    'reels'
+  ].map((item) => (
+    <button
+      key={item}
+      className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-4 py-1 text-sm shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
+    >
+      {item}
+    </button>
+  ))}
+</div>
       </main>
     </div>
   );

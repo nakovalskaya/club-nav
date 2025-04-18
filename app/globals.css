@@ -33,3 +33,10 @@ body {
   -ms-overflow-style: none; /* для IE и Edge */
   scrollbar-width: none;    /* для Firefox */
 }
+@media (min-width: 768px) {
+  main {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans flex justify-center">
-      <main className="w-full max-w-sm px-4 py-6 mx-auto">
+      <main className="w-full px-4 py-6">
         {/* Заголовок-картинка */}
         <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-24 mb-6" />
 

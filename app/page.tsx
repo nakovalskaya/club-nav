@@ -29,7 +29,7 @@ export default function Home() {
         </div>
 
 {/* Разделы */}
-<h2 className="text-lg font-semibold mb-2">Разделы</h2>
+<h2 className="text-lg font-semibold mb-2 text-[#EBDEC8]">Разделы</h2>
 <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide scroll-smooth">
   {[
     { label: 'воронки', path: 'voronki' },

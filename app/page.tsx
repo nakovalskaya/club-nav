@@ -12,9 +12,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white font-sans flex justify-center">
       <main className="w-full px-4 py-6">
-        {/* Заголовок-картинка */}
-        <img src="/logo.png" alt="nakovalskaya" className="mx-auto w-28 mt-0 mb-8" />
-
         {/* Сетка из 4 карточек */}
         <div className="grid grid-cols-2 gap-1 mb-4 -mt-4">
           <a href="/efiry" className="rounded-xl overflow-hidden h-[110px]">
@@ -35,20 +32,21 @@ export default function Home() {
 <h2 className="text-lg font-semibold mb-2">Разделы</h2>
 <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide scroll-smooth">
   {[
-    'воронки',
-    'продажи',
-    'instagram',
-    'telegram',
-    'threads',
-    'нейросети',
-    'reels'
-  ].map((item) => (
-    <button
-      key={item}
+    { label: 'воронки', path: 'voronki' },
+    { label: 'продажи', path: 'prodazhi' },
+    { label: 'instagram', path: 'instagram' },
+    { label: 'telegram', path: 'telegram' },
+    { label: 'threads', path: 'threads' },
+    { label: 'нейросети', path: 'nejroseti' },
+    { label: 'reels', path: 'reels' }
+  ].map(({ label, path }) => (
+    <a
+      key={path}
+      href={`/${path}`}
       className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-4 py-1 text-sm shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
     >
-      {item}
-    </button>
+      {label}
+    </a>
   ))}
 </div>
       </main>

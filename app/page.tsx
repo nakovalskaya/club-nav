@@ -10,9 +10,8 @@ export default function Home() {
       window.Telegram?.WebApp?.ready?.();
     }
   }, []);
-
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
-  const cardId = 'demo-card-1';
+  const cardId = '1';
   const isFav = isFavorite(cardId);
 
   return (

@@ -22,7 +22,7 @@ export default function FavoriteButton({ id }: Props) {
   return (
     <div className="absolute top-2 right-2 z-10">
       {/* Градиентный фон-кружочек */}
-      <div className="absolute inset-0 w-8 h-8 bg-gradient-to-br from-black/50 to-black/0 rounded-full blur-sm z-[-1]" />
+      <div className="absolute inset-0 w-8 h-8 bg-gradient-to-br from-black/80 to-black/40 rounded-full blur-sm z-[-1]" />
 
       <button
         onClick={handleClick}

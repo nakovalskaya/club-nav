@@ -18,7 +18,7 @@ export default function FavoritesPage() {
   const saved = allCards.filter((card) => visibleFavorites.includes(card.id));
 
   return (
-    <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
+    <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
       <h1 className="text-xl font-semibold mb-4">Избранное</h1>
 
       {saved.length === 0 ? (

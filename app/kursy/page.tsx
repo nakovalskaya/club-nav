@@ -9,7 +9,7 @@ export default function KursyPage() {
   const { isFavorite, toggleFavorite } = useFavorites();
 
   return (
-    <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
+    <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
       <button onClick={() => router.back()} className="mb-4">
         <img src="/back.svg" alt="Назад" className="w-7 h-7" />
       </button>

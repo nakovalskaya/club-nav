@@ -1,20 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { cards as rawCards } from './cards';
 import { useFavorites } from '../hooks/useFavorites';
 
-export const cards = [
-  {
-    id: 'efiry-1',
-    title: 'Скрытая сила эфиров',
-    description: 'Как проводить эфиры, которые реально продают.',
-    recommended: true, // 💡 попадёт на главную
-  },
-  {
-    id: 'efiry-2',
-    title: 'Структура успешного прямого эфира',
-    description: 'Что говорить, чтобы досматривали до конца.',
-  },
-];
+export const cards: {
+  id: string;
+  title: string;
+  description: string;
+  recommended?: boolean;
+}[] = rawCards;
 
 export default function EfiryPage() {
   const router = useRouter();
@@ -25,11 +19,13 @@ export default function EfiryPage() {
       <button onClick={() => router.back()} className="mb-4">
         <img src="/back.svg" alt="Назад" className="w-7 h-7" />
       </button>
+
       <h1 className="text-xl font-semibold mb-4">Эфиры</h1>
 
       <div className="space-y-4">
         {cards.map(({ id, title, description }) => {
           const fav = isFavorite(id);
+
           return (
             <div key={id} className="p-4 border border-[#EBDEC8] rounded-xl relative">
               <button
@@ -53,6 +49,7 @@ export default function EfiryPage() {
                   />
                 </svg>
               </button>
+
               <h3 className="text-base font-semibold mb-1">{title}</h3>
               <p className="text-sm text-[#a9a09b]">{description}</p>
             </div>

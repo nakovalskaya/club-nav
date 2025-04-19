@@ -13,5 +13,3 @@ export default function EfiryPage() {
     </main>
   );
 }
-
-export const cards = [];

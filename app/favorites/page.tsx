@@ -3,26 +3,22 @@
 import { useFavorites } from '../hooks/useFavorites';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
-import { useState, useEffect } from 'react';
 
 export default function FavoritesPage() {
-  const { favorites, isFavorite, toggleFavorite, isReady } = useFavorites();
-  const [saved, setSaved] = useState(() => allCards.filter((item) => favorites.includes(item.id)));
-
-  useEffect(() => {
-    setSaved(allCards.filter((item) => favorites.includes(item.id)));
-  }, [favorites]);
+  const { favorites, isReady } = useFavorites();
 
   if (!isReady) return null;
+
+  const saved = allCards.filter(item => favorites.includes(item.id));
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
       <h1 className="text-xl font-semibold mb-4">Избранное</h1>
 
       {saved.length === 0 ? (
-        <p className="text-sm text-gray-500">Пока пусто. Добавь что-нибудь ⭐️</p>
+        <p className="text-sm text-gray-500">Пока пусто. Добавь что‑нибудь ⭐️</p>
       ) : (
-        saved.map((item) => (
+        saved.map(item => (
           <div
             key={item.id}
             className="mb-4 border border-[#EBDEC8] p-4 rounded-lg relative"

@@ -3,13 +3,17 @@
 import { useFavorites } from '../hooks/useFavorites';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
+import { useMemo } from 'react';
 
 export default function FavoritesPage() {
   const { favorites, isReady } = useFavorites();
 
-  if (!isReady) return null;
+  const saved = useMemo(
+    () => allCards.filter((item) => favorites.includes(item.id)),
+    [favorites]
+  );
 
-  const saved = allCards.filter((item) => favorites.includes(item.id));
+  if (!isReady) return null;
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">

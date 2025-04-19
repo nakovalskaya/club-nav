@@ -3,31 +3,7 @@
 import { useFavorites } from '../hooks/useFavorites';
 import FavoriteButton from '../components/FavoriteButton';
 
-import * as efiryModule from '../efiry/cards';
-import * as podcastyModule from '../podcasty/cards';
-import * as kursyModule from '../kursy/cards';
-import * as gidyModule from '../gidy/cards';
-import * as prodazhiModule from '../prodazhi/cards';
-import * as voronkiModule from '../voronki/cards';
-import * as instagramModule from '../instagram/cards';
-import * as telegramModule from '../telegram/cards';
-import * as threadsModule from '../threads/cards';
-import * as nejrosetiModule from '../nejroseti/cards';
-import * as reelsModule from '../reels/cards';
-
-const allCards = [
-  ...efiryModule.cards,
-  ...podcastyModule.cards,
-  ...kursyModule.cards,
-  ...gidyModule.cards,
-  ...prodazhiModule.cards,
-  ...voronkiModule.cards,
-  ...instagramModule.cards,
-  ...telegramModule.cards,
-  ...threadsModule.cards,
-  ...nejrosetiModule.cards,
-  ...reelsModule.cards,
-];
+import { allCards } from '../data/allCards';
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();

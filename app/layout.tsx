@@ -19,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-  <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
-    {children}
-    <BottomNav />
-  </div>
-</body>
+        <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
+          {children}
+          <BottomNav />
+        </div>
+      </body>
     </html>
   );
 }

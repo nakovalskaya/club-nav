@@ -1,17 +1,15 @@
 'use client';
 
 import { useFavorites } from '../hooks/useFavorites';
-import FavoriteButton from '../components/FavoriteButton';
 import { allCards } from '../data/allCards';
-import { useMemo } from 'react';
+import FavoriteButton from '../components/FavoriteButton';
 
 export default function FavoritesPage() {
-  const { favorites } = useFavorites();
+  const { favorites, isReady } = useFavorites();
 
-  const saved = useMemo(
-    () => allCards.filter((item) => favorites.includes(item.id)),
-    [favorites]
-  );
+  const saved = allCards.filter((item) => favorites.includes(item.id));
+
+  if (!isReady) return null;
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">

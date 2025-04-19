@@ -1,23 +1,13 @@
 'use client';
 
 import { useFavorites } from '../hooks/useFavorites';
-import { useState } from 'react';
 
 type Props = { id: string };
 
 export default function FavoriteButton({ id }: Props) {
-  const { isFavorite, toggleFavorite, isReady } = useFavorites();
-  const [clicked, setClicked] = useState(false);
-
-  if (!isReady) return null;
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const fav = isFavorite(id);
-
-  const handleClick = () => {
-    toggleFavorite(id);
-    setClicked(true);
-    setTimeout(() => setClicked(false), 600);
-  };
 
   return (
     <div className="absolute top-2 right-2 z-10">
@@ -25,7 +15,7 @@ export default function FavoriteButton({ id }: Props) {
       <div className="absolute inset-0 w-8 h-8 bg-gradient-to-br from-black/80 to-black/40 rounded-full blur-sm z-[-1]" />
 
       <button
-        onClick={handleClick}
+        onClick={() => toggleFavorite(id)}
         className="w-8 h-8 flex items-center justify-center transition-transform duration-300 bg-transparent p-1 rounded-full"
       >
         <svg
@@ -34,8 +24,8 @@ export default function FavoriteButton({ id }: Props) {
           fill={fav ? '#EFC988' : 'none'}
           stroke={fav ? '#EFC988' : '#D2BCA7'}
           className={`w-6 h-6 transition-all duration-500 ease-in-out ${
-            fav ? 'rotate-[360deg] scale-110' : 'scale-100'
-          } ${fav && clicked ? 'glow' : ''}`}
+            fav ? 'rotate-[360deg] scale-110 glow' : 'scale-100'
+          }`}
         >
           <path
             strokeLinecap="round"

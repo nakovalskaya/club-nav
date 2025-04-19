@@ -13,3 +13,4 @@ export default function InstagramPage() {
     </main>
   );
 }
+export const cards = [];

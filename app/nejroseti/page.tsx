@@ -13,3 +13,4 @@ export default function NejrosetiPage() {
     </main>
   );
 }
+export const cards = [];

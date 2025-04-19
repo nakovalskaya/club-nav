@@ -13,3 +13,5 @@ export default function KursyPage() {
     </main>
   );
 }
+
+export const cards = [];

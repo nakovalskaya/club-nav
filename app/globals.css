@@ -56,6 +56,13 @@ body {
     margin-right: auto;
   }
 }
+
+@layer utilities {
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 4px #EBDEC8) drop-shadow(0 0 8px #EBDEC8);
+  }
+}
+
 html,
 body {
   margin: 0;

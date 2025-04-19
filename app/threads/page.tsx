@@ -13,3 +13,4 @@ export default function ThreadsPage() {
     </main>
   );
 }
+export const cards = [];

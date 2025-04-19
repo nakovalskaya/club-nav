@@ -13,3 +13,4 @@ export default function VoronkiPage() {
     </main>
   );
 }
+export const cards = [];

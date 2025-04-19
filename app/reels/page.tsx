@@ -13,3 +13,4 @@ export default function ReelsPage() {
     </main>
   );
 }
+export const cards = [];

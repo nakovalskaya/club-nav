@@ -13,3 +13,6 @@ export default function PodcastyPage() {
     </main>
   );
 }
+
+// 👇 Добавляем экспорт пустого массива карточек
+export const cards = [];

@@ -13,3 +13,4 @@ export default function TelegramPage() {
     </main>
   );
 }
+export const cards = [];

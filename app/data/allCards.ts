@@ -10,7 +10,14 @@ import { cards as threadsCards } from '../threads/cards';
 import { cards as nejrosetiCards } from '../nejroseti/cards';
 import { cards as reelsCards } from '../reels/cards';
 
-export const allCards = [
+export type Card = {
+  id: string;
+  title: string;
+  description: string;
+  recommended?: boolean;
+};
+
+export const allCards: Card[] = [
   ...efiryCards,
   ...podcastyCards,
   ...kursyCards,

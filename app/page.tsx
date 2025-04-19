@@ -3,50 +3,7 @@
 import { useEffect } from 'react';
 import { useFavorites } from './hooks/useFavorites';
 import FavoriteButton from './components/FavoriteButton';
-import * as efiryModule from './efiry/cards';
-import * as podcastyModule from './podcasty/cards';
-import * as kursyModule from './kursy/cards';
-import * as gidyModule from './gidy/cards';
-import * as prodazhiModule from './prodazhi/cards';
-import * as voronkiModule from './voronki/cards';
-import * as instagramModule from './instagram/cards';
-import * as telegramModule from './telegram/cards';
-import * as threadsModule from './threads/cards';
-import * as nejrosetiModule from './nejroseti/cards';
-import * as reelsModule from './reels/cards';
-
-const efiryCards = Array.isArray(efiryModule.cards) ? efiryModule.cards : [];
-const podcastyCards = Array.isArray(podcastyModule.cards) ? podcastyModule.cards : [];
-const kursyCards = Array.isArray(kursyModule.cards) ? kursyModule.cards : [];
-const gidyCards = Array.isArray(gidyModule.cards) ? gidyModule.cards : [];
-const prodazhiCards = Array.isArray(prodazhiModule.cards) ? prodazhiModule.cards : [];
-const voronkiCards = Array.isArray(voronkiModule.cards) ? voronkiModule.cards : [];
-const instagramCards = Array.isArray(instagramModule.cards) ? instagramModule.cards : [];
-const telegramCards = Array.isArray(telegramModule.cards) ? telegramModule.cards : [];
-const threadsCards = Array.isArray(threadsModule.cards) ? threadsModule.cards : [];
-const nejrosetiCards = Array.isArray(nejrosetiModule.cards) ? nejrosetiModule.cards : [];
-const reelsCards = Array.isArray(reelsModule.cards) ? reelsModule.cards : [];
-
-type Card = {
-  id: string;
-  title: string;
-  description: string;
-  recommended?: boolean;
-};
-
-const allCards: Card[] = [
-  ...efiryCards,
-  ...podcastyCards,
-  ...kursyCards,
-  ...gidyCards,
-  ...prodazhiCards,
-  ...voronkiCards,
-  ...instagramCards,
-  ...telegramCards,
-  ...threadsCards,
-  ...nejrosetiCards,
-  ...reelsCards,
-];
+import { allCards } from './data/allCards';
 
 const recommendedCards = allCards.filter(card => card.recommended);
 

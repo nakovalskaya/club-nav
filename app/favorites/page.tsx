@@ -1,31 +1,54 @@
 'use client';
 
-import { useFavorites } from '../hooks/useFavorites'
+import { useFavorites } from '../hooks/useFavorites';
+import FavoriteButton from '../components/FavoriteButton';
+
+import * as efiryModule from '../efiry/cards';
+import * as podcastyModule from '../podcasty/cards';
+import * as kursyModule from '../kursy/cards';
+import * as gidyModule from '../gidy/cards';
+import * as prodazhiModule from '../prodazhi/cards';
+import * as voronkiModule from '../voronki/cards';
+import * as instagramModule from '../instagram/cards';
+import * as telegramModule from '../telegram/cards';
+import * as threadsModule from '../threads/cards';
+import * as nejrosetiModule from '../nejroseti/cards';
+import * as reelsModule from '../reels/cards';
+
+const allCards = [
+  ...efiryModule.cards,
+  ...podcastyModule.cards,
+  ...kursyModule.cards,
+  ...gidyModule.cards,
+  ...prodazhiModule.cards,
+  ...voronkiModule.cards,
+  ...instagramModule.cards,
+  ...telegramModule.cards,
+  ...threadsModule.cards,
+  ...nejrosetiModule.cards,
+  ...reelsModule.cards,
+];
+
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
-
-  // Пример карточек, позже заменим на реальные
-  const content = [
-    { id: '1', title: 'Эфир: как выстраивать воронки', description: 'Глубокий эфир о продажах без перегрева' },
-    { id: '2', title: 'Гайд по Telegram', description: 'Выстроим доверие и лояльность' },
-    { id: '3', title: 'Интенсив: Сторис без выгорания', description: 'Система сторис без ежедневной рутины' },
-  ];
-
-  const saved = content.filter((item) => favorites.includes(item.id));
+  const saved = allCards.filter((item) => favorites.includes(item.id));
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
       <h1 className="text-xl font-semibold mb-4">Избранное</h1>
 
       {saved.length === 0 ? (
-        <p className="text-sm text-gray-500">Пока пусто. Добавь что-нибудь ⭐️</p>
+        <p className="text-sm text-[#9e948f]">Пока пусто. Добавь что-нибудь ⭐️</p>
       ) : (
-        saved.map((item) => (
-          <div key={item.id} className="mb-4 border border-[#EBDEC8] p-4 rounded-lg">
-            <h2 className="text-lg">{item.title}</h2>
-            <p className="text-sm text-[#9e948f]">{item.description}</p>
-          </div>
-        ))
+        <div className="space-y-4">
+          {saved.map((item) => (
+            <div key={item.id} className="border border-[#EBDEC8] p-4 rounded-xl relative">
+              <FavoriteButton id={item.id} />
+              <h2 className="text-lg font-semibold mb-1">{item.title}</h2>
+              <p className="text-sm text-[#9e948f]">{item.description}</p>
+            </div>
+          ))}
+        </div>
       )}
     </main>
   );

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useFavorites } from './hooks/useFavorites';
 import FavoriteButton from './components/FavoriteButton';
-import * as efiryModule from './efiry/page';
+import * as efiryModule from './efiry/cards';
 import * as podcastyModule from './podcasty/page';
 import * as kursyModule from './kursy/page';
 import * as gidyModule from './gidy/page';

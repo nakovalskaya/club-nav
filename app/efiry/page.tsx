@@ -1,14 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { cards as rawCards } from './cards';
 import { useFavorites } from '../hooks/useFavorites';
-
-export const cards: {
-  id: string;
-  title: string;
-  description: string;
-  recommended?: boolean;
-}[] = rawCards;
+import { cards } from './cards';
 
 export default function EfiryPage() {
   const router = useRouter();

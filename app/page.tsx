@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useFavorites } from './hooks/useFavorites'; // <-- добавили хук
+import { useFavorites } from './hooks/useFavorites' // ✅ путь поправлен
 
 export default function Home() {
   useEffect(() => {

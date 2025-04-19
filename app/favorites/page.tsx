@@ -3,12 +3,15 @@
 import { useFavorites } from '../hooks/useFavorites';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
+import { useMemo } from 'react';
 
 export default function FavoritesPage() {
   const { favorites, isFavorite } = useFavorites();
 
-  // Фильтруем и сразу проверяем актуальность
-  const saved = allCards.filter((item) => isFavorite(item.id));
+  const saved = useMemo(
+    () => allCards.filter((item) => isFavorite(item.id)),
+    [favorites] // 👈 теперь saved обновляется при изменении избранного
+  );
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
@@ -28,3 +31,4 @@ export default function FavoritesPage() {
     </main>
   );
 }
+ч

@@ -34,7 +34,7 @@ type Card = {
   recommended?: boolean;
 };
 
-const recommendedCards = [
+const allCards: Card[] = [
   ...efiryCards,
   ...podcastyCards,
   ...kursyCards,
@@ -46,7 +46,9 @@ const recommendedCards = [
   ...threadsCards,
   ...nejrosetiCards,
   ...reelsCards,
-].filter(card => card.recommended);
+];
+
+const recommendedCards = allCards.filter(card => card.recommended);
 
 export default function Home() {
   const { favorites, toggleFavorite, isFavorite } = useFavorites();

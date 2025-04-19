@@ -1,35 +1,31 @@
 'use client';
 
-import { useFavorites } from '../hooks/useFavorites';
+import { useFavoritesStore } from '../store/useFavoritesStore';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
 import { useEffect, useState } from 'react';
 
 export default function FavoritesPage() {
-  const { favorites, isReady } = useFavorites();
-  const [visibleFavorites, setVisibleFavorites] = useState<string[]>([]);
+  const [saved, setSaved] = useState(() =>
+    allCards.filter((item) =>
+      useFavoritesStore.getState().favorites.includes(item.id)
+    )
+  );
 
+  // 🪄 Обновляем карточки при изменении избранного через событие
   useEffect(() => {
-    if (isReady) setVisibleFavorites(favorites);
-  }, [favorites, isReady]);
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      const stored = localStorage.getItem('my-favorites');
-      if (stored) {
-        setVisibleFavorites(JSON.parse(stored));
-      }
+    const updateSaved = () => {
+      const updated = allCards.filter((item) =>
+        useFavoritesStore.getState().favorites.includes(item.id)
+      );
+      setSaved(updated);
     };
 
-    window.addEventListener('favorites-updated', handleUpdate);
-    return () => {
-      window.removeEventListener('favorites-updated', handleUpdate);
-    };
+    updateSaved(); // Обновляем сразу при загрузке
+
+    window.addEventListener('favorites-updated', updateSaved);
+    return () => window.removeEventListener('favorites-updated', updateSaved);
   }, []);
-
-  const saved = allCards.filter((item) => visibleFavorites.includes(item.id));
-
-  if (!isReady) return null;
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">

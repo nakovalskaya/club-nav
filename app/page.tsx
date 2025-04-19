@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useFavorites } from './hooks/useFavorites';
+import { useFavoritesStore } from './store/useFavoritesStore';
 import FavoriteButton from './components/FavoriteButton';
 import { allCards } from './data/allCards';
 
 const recommendedCards = allCards.filter(card => card.recommended);
 
 export default function Home() {
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+const isFavorite = useFavoritesStore((state) => state.isFavorite);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Telegram' in window) {

@@ -7,21 +7,21 @@ type Props = { id: string };
 export default function FavoriteButton({ id }: Props) {
   const { isFavorite, toggleFavorite, isReady } = useFavorites();
 
-  if (!isReady) return null; // ждём, пока загрузится localStorage
+  if (!isReady) return null;
 
   const fav = isFavorite(id);
 
   return (
     <button
       onClick={() => toggleFavorite(id)}
-      className="absolute top-2 right-2 transition-transform duration-300"
+      className="absolute top-2 right-2 transition-transform duration-300 bg-transparent p-1 rounded-full"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
         stroke="#EBDEC8"
-        className={`w-6 h-6 transform transition-all duration-500 ease-in-out ${
+        className={`w-6 h-6 transition-all duration-500 ease-in-out ${
           fav ? 'fill-[#EBDEC8] rotate-[360deg] scale-110 drop-shadow-glow' : 'scale-100'
         }`}
       >
@@ -35,3 +35,4 @@ export default function FavoriteButton({ id }: Props) {
     </button>
   );
 }
+

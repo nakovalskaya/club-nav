@@ -14,6 +14,20 @@ export function useFavorites() {
       setFavorites(JSON.parse(stored));
     }
     setIsReady(true);
+
+    // 🔄 Слушаем кастомное событие
+    const syncFavorites = () => {
+      const updated = localStorage.getItem(STORAGE_KEY);
+      if (updated) {
+        setFavorites(JSON.parse(updated));
+      }
+    };
+
+    window.addEventListener('favorites-updated', syncFavorites);
+
+    return () => {
+      window.removeEventListener('favorites-updated', syncFavorites);
+    };
   }, []);
 
   useEffect(() => {

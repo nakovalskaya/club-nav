@@ -1,10 +1,14 @@
 'use client';
+
 import { useFavorites } from '../hooks/useFavorites';
 
 type Props = { id: string };
 
 export default function FavoriteButton({ id }: Props) {
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { isFavorite, toggleFavorite, isReady } = useFavorites();
+
+  if (!isReady) return null; // ждём, пока загрузится localStorage
+
   const fav = isFavorite(id);
 
   return (

@@ -12,7 +12,8 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-black h-22 z-50 px-2 pt-0,5 pb-6 flex justify-around items-end">
+    <nav className="fixed bottom-0 left-0 w-full h-20 z-50 px-2 pt-0.5 pb-6 flex justify-around items-end
+  bg-black/50 backdrop-blur-md border-t border-white/10">
       {links.map(({ label, href, icon }) => {
         const isActive = currentPath === href;
 

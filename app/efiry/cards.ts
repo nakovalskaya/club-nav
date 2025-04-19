@@ -3,7 +3,6 @@ export const cards = [
     id: 'efiry-1',
     title: 'Секреты эффективных эфиров',
     description: 'Как проводить эфиры, чтобы реально продавать, а не просто «болтать».',
-    recommended: true,
   },
   {
     id: 'efiry-2',

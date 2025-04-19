@@ -3,7 +3,6 @@ export const cards = [
       id: 'prodazhi-1',
       title: 'Как продавать без прогревов',
       description: 'Гайд по воронкам без сторис.',
-      recommended: true,
     },
     {
       id: 'prodazhi-2',

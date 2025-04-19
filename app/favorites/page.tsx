@@ -3,13 +3,17 @@
 import { useFavorites } from '../hooks/useFavorites';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
+import { useState, useEffect } from 'react';
 
 export default function FavoritesPage() {
-  const { favorites, toggleFavorite, isFavorite, isReady } = useFavorites();
+  const { favorites, isFavorite, toggleFavorite, isReady } = useFavorites();
+  const [saved, setSaved] = useState(() => allCards.filter((item) => favorites.includes(item.id)));
+
+  useEffect(() => {
+    setSaved(allCards.filter((item) => favorites.includes(item.id)));
+  }, [favorites]);
 
   if (!isReady) return null;
-
-  const saved = allCards.filter((item) => isFavorite(item.id));
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">

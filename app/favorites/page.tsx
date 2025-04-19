@@ -2,15 +2,19 @@
 
 import { useFavorites } from '../hooks/useFavorites';
 import FavoriteButton from '../components/FavoriteButton';
-
 import { allCards } from '../data/allCards';
+import { useMemo } from 'react';
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
-  const saved = allCards.filter((item) => favorites.includes(item.id));
+
+  const saved = useMemo(
+    () => allCards.filter((item) => favorites.includes(item.id)),
+    [favorites]
+  );
 
   return (
-    <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
+    <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
       <h1 className="text-xl font-semibold mb-4">Избранное</h1>
 
       {saved.length === 0 ? (
@@ -29,5 +33,3 @@ export default function FavoritesPage() {
     </main>
   );
 }
-
- 

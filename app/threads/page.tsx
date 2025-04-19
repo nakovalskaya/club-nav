@@ -1,12 +1,13 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useFavorites } from '../hooks/useFavorites';
+import { useFavoritesStore } from '../store/useFavoritesStore';
 import { cards } from './cards';
 import FavoriteButton from '../components/FavoriteButton';
 
 export default function ThreadsPage() {
   const router = useRouter();
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFavorite = useFavoritesStore((state) => state.isFavorite);
+const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">

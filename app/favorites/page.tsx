@@ -1,18 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useFavorites } from '../hooks/useFavorites';
 import { allCards } from '../data/allCards';
 import FavoriteButton from '../components/FavoriteButton';
 
 export default function FavoritesPage() {
-  const { favorites, isFavorite } = useFavorites();
-  const [saved, setSaved] = useState(allCards.filter((item) => favorites.includes(item.id)));
+  const { favorites, isReady } = useFavorites();
 
-  // Обновляем список при изменении favorites
-  useEffect(() => {
-    setSaved(allCards.filter((item) => favorites.includes(item.id)));
-  }, [favorites]);
+  if (!isReady) return null;
+
+  const saved = allCards.filter((item) => favorites.includes(item.id));
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4">
@@ -22,7 +19,10 @@ export default function FavoritesPage() {
         <p className="text-sm text-gray-500">Пока пусто. Добавь что-нибудь ⭐️</p>
       ) : (
         saved.map((item) => (
-          <div key={item.id} className="mb-4 border border-[#EBDEC8] p-4 rounded-lg relative">
+          <div
+            key={item.id}
+            className="mb-4 border border-[#EBDEC8] p-4 rounded-lg relative"
+          >
             <FavoriteButton id={item.id} />
             <h2 className="text-lg">{item.title}</h2>
             <p className="text-sm text-[#9e948f]">{item.description}</p>

@@ -8,37 +8,20 @@ type Store = {
   isFavorite: (id: string) => boolean;
 };
 
-/* ---------- helpers ---------- */
-
-// CloudStorage есть, если объект присутствует
 function cloudAvailable() {
-  return typeof window !== 'undefined' &&
-    // @ts-ignore
-    !!window.Telegram?.WebApp?.CloudStorage;
+  return !!window?.Telegram?.WebApp?.CloudStorage;
 }
 
-// Пишем в облако; если пользователь отказал — делаем fallback
-async function saveToCloud(favs: string[]) {
-  // @ts-ignore
-  const CS = window.Telegram.WebApp.CloudStorage;
-
-  try {
-    await CS.setItem('my-favorites', JSON.stringify(favs));
-  } catch {
-    // @ts-ignore
-    const ok = await window.Telegram.WebApp.requestWriteAccess();
-    if (ok) {
-      await CS.setItem('my-favorites', JSON.stringify(favs));
-    } else {
-      localStorage.setItem('my-favorites', JSON.stringify(favs));
-      console.warn(
-        'Избранное сохранено только локально (пользователь отказал в CloudStorage).'
-      );
-    }
-  }
+// promisify setItem
+function cloudSet(key: string, value: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    window.Telegram.WebApp.CloudStorage.setItem(
+      key,
+      value,
+      (err: any) => (err ? reject(err) : resolve())
+    );
+  });
 }
-
-/* ---------- Zustand‑store ---------- */
 
 export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
@@ -51,10 +34,16 @@ export const useFavoritesStore = create<Store>((set, get) => ({
 
     set({ favorites: updated });
 
+    const json = JSON.stringify(updated);
+
     if (cloudAvailable()) {
-      await saveToCloud(updated);
+      try {
+        await cloudSet('my-favorites', json);
+      } catch {
+        localStorage.setItem('my-favorites', json);
+      }
     } else {
-      localStorage.setItem('my-favorites', JSON.stringify(updated));
+      localStorage.setItem('my-favorites', json);
     }
 
     window.dispatchEvent(new Event('favorites-updated'));

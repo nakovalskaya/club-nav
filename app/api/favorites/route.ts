@@ -10,15 +10,18 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Missing user_id' }, { status: 400 });
 
   const key = `user:${userId}:favorites`;
+  console.log(`🔍 [GET] user_id=${userId} → key=${key}`);
+
   const res = await fetch(`${REST_URL}/get/${key}`, {
     headers: { Authorization: `Bearer ${REST_TOKEN}` }
   });
 
-  // Upstash всегда отдаёт JSON { result: "...", ... }
   const data = await res.json() as { result: string | null };
-const list = data.result ? JSON.parse(data.result) : [];
+  const list = data.result ? JSON.parse(data.result) : [];
 
-  return NextResponse.json(list);          // ← 🔑 массив строк
+  console.log(`📦 [GET RESULT]`, list);
+
+  return NextResponse.json(list);
 }
 
 // ---------- POST ----------
@@ -32,6 +35,8 @@ export async function POST(req: NextRequest) {
 
   const key   = `user:${user_id}:favorites`;
   const value = JSON.stringify(list);
+
+  console.log(`⭐ [POST] user_id=${user_id} →`, list);
 
   await fetch(`${REST_URL}/set/${key}`, {
     method: 'POST',

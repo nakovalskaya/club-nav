@@ -10,18 +10,24 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
+// Получаем Telegram user_id
 function getUserId(): string | null {
   // @ts-ignore
   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  return id != null ? String(id) : null;   // ← всегда строка
+  return id != null ? String(id) : null;
 }
 
+// Сохраняем избранное: либо в Redis, либо в localStorage
 async function apiSave(list: string[]) {
   const uid = getUserId();
+
+  console.log('💾 [apiSave] uid =', uid, '→', list);
+
   if (!uid) {
     localStorage.setItem('my-favorites', JSON.stringify(list));
     return;
   }
+
   await fetch('/api/favorites', {
     method : 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -29,15 +35,23 @@ async function apiSave(list: string[]) {
   });
 }
 
+// Загружаем избранное: либо с Redis, либо с localStorage
 async function apiLoad(): Promise<string[]> {
   const uid = getUserId();
+  console.log('🔍 [apiLoad] uid =', uid);
+
   if (!uid) {
     const raw = localStorage.getItem('my-favorites');
     return raw ? JSON.parse(raw) : [];
   }
+
   const r = await fetch('/api/favorites?user_id=' + uid);
   if (!r.ok) return [];
-  return await r.json();                // теперь всегда массив
+
+  const json = await r.json();
+  console.log('📦 [apiLoad] result =', json);
+
+  return json;
 }
 
 /* ---------- Zustand‑store ---------- */
@@ -47,7 +61,9 @@ export const useFavoritesStore = create<Store>((set, get) => ({
 
   toggleFavorite: async (id) => {
     const curr    = get().favorites;
-    const updated = curr.includes(id) ? curr.filter(i => i !== id) : [...curr, id];
+    const updated = curr.includes(id)
+      ? curr.filter(i => i !== id)
+      : [...curr, id];
 
     set({ favorites: updated });
     await apiSave(updated);
@@ -56,6 +72,8 @@ export const useFavoritesStore = create<Store>((set, get) => ({
 
   isFavorite: (id) => get().favorites.includes(id),
 }));
+
+/* ---------- для LayoutInit ---------- */
 
 export async function loadFavoritesFromApi() {
   const list = await apiLoad();

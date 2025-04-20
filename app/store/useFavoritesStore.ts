@@ -13,21 +13,18 @@ type Store = {
 // CloudStorage есть, если объект присутствует
 function cloudAvailable() {
   return typeof window !== 'undefined' &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     !!window.Telegram?.WebApp?.CloudStorage;
 }
 
 // Пишем в облако; если пользователь отказал — делаем fallback
 async function saveToCloud(favs: string[]) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const CS = window.Telegram.WebApp.CloudStorage;
 
   try {
     await CS.setItem('my-favorites', JSON.stringify(favs));
   } catch {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const ok = await window.Telegram.WebApp.requestWriteAccess();
     if (ok) {

@@ -7,29 +7,26 @@ export default function LayoutInit() {
   const setFavorites = useFavoritesStore.setState;
 
   useEffect(() => {
-    // первоначальная загрузка
-    async function init() {
+    async function syncFavorites(source: string) {
+      console.log(`🔁 Синхронизация (${source})`);
       const data = await loadFavoritesFromApi();
+      console.log('📡 Получено избранное:', data);
       setFavorites(data);
       window.dispatchEvent(new Event('favorites-updated'));
     }
 
-    init();
+    // начальная загрузка
+    syncFavorites('старт');
 
-    // при возврате в фокус — синхронизировать
-    const handleFocus = async () => {
-      const data = await loadFavoritesFromApi();
-      setFavorites(data);
-      window.dispatchEvent(new Event('favorites-updated'));
-    };
-
+    // фокус/переключение окна
+    const handleFocus = () => syncFavorites('фокус/возврат');
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') handleFocus();
     });
 
-    // если хочешь дополнительно автообновление каждые 10 сек — раскомментируй
-    const interval = setInterval(handleFocus, 10000);
+    // автообновление каждые 10 секунд
+    const interval = setInterval(() => syncFavorites('таймер 10с'), 10000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);

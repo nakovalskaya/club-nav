@@ -14,7 +14,14 @@ type Store = {
 function getUserId(): string | null {
   // @ts-ignore
   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  return id != null ? String(id) : null;
+  if (id != null) return String(id);
+
+  // fallback для dev-режима (например, в StackBlitz)
+  if (process.env.NODE_ENV === 'development') {
+    return '535118137'; // хардкод на время отладки
+  }
+
+  return null;
 }
 // Сохраняем избранное: либо в Redis, либо в localStorage
 async function apiSave(list: string[]) {

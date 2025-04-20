@@ -29,12 +29,12 @@ export default function LayoutInit() {
     });
 
     // если хочешь дополнительно автообновление каждые 10 сек — раскомментируй
-    // const interval = setInterval(handleFocus, 10000);
+    const interval = setInterval(handleFocus, 10000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleFocus);
-      // clearInterval(interval);
+      clearInterval(interval);
     };
   }, []);
 

@@ -8,16 +8,60 @@ type Store = {
   isFavorite: (id: string) => boolean;
 };
 
+/* ---------- helpers ---------- */
+
+// CloudStorage есть, если объект присутствует
+function cloudAvailable() {
+  return typeof window !== 'undefined' &&
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    !!window.Telegram?.WebApp?.CloudStorage;
+}
+
+// Пишем в облако; если пользователь отказал — делаем fallback
+async function saveToCloud(favs: string[]) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const CS = window.Telegram.WebApp.CloudStorage;
+
+  try {
+    await CS.setItem('my-favorites', JSON.stringify(favs));
+  } catch {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ok = await window.Telegram.WebApp.requestWriteAccess();
+    if (ok) {
+      await CS.setItem('my-favorites', JSON.stringify(favs));
+    } else {
+      localStorage.setItem('my-favorites', JSON.stringify(favs));
+      console.warn(
+        'Избранное сохранено только локально (пользователь отказал в CloudStorage).'
+      );
+    }
+  }
+}
+
+/* ---------- Zustand‑store ---------- */
+
 export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
-  toggleFavorite: (id: string) => {
-    const favorites = get().favorites;
-    const updated = favorites.includes(id)
-      ? favorites.filter((i) => i !== id)
-      : [...favorites, id];
+
+  toggleFavorite: async (id) => {
+    const curr = get().favorites;
+    const updated = curr.includes(id)
+      ? curr.filter((i) => i !== id)
+      : [...curr, id];
 
     set({ favorites: updated });
-    localStorage.setItem('my-favorites', JSON.stringify(updated));
+
+    if (cloudAvailable()) {
+      await saveToCloud(updated);
+    } else {
+      localStorage.setItem('my-favorites', JSON.stringify(updated));
+    }
+
+    window.dispatchEvent(new Event('favorites-updated'));
   },
-  isFavorite: (id: string) => get().favorites.includes(id),
+
+  isFavorite: (id) => get().favorites.includes(id),
 }));

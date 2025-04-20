@@ -10,13 +10,12 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
-// user.id из Telegram; в browser‑preview вернётся null
 function getUserId(): string | null {
   // @ts-ignore
-  return window.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
+  const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+  return id != null ? String(id) : null;   // ← всегда строка
 }
 
-// POST /api/favorites
 async function apiSave(list: string[]) {
   const uid = getUserId();
   if (!uid) {
@@ -24,13 +23,12 @@ async function apiSave(list: string[]) {
     return;
   }
   await fetch('/api/favorites', {
-    method: 'POST',
+    method : 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user_id: uid, list }),
+    body   : JSON.stringify({ user_id: uid, list })
   });
 }
 
-// GET /api/favorites
 async function apiLoad(): Promise<string[]> {
   const uid = getUserId();
   if (!uid) {
@@ -39,7 +37,7 @@ async function apiLoad(): Promise<string[]> {
   }
   const r = await fetch('/api/favorites?user_id=' + uid);
   if (!r.ok) return [];
-  return await r.json();
+  return await r.json();                // теперь всегда массив
 }
 
 /* ---------- Zustand‑store ---------- */
@@ -48,10 +46,8 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
 
   toggleFavorite: async (id) => {
-    const curr = get().favorites;
-    const updated = curr.includes(id)
-      ? curr.filter((i) => i !== id)
-      : [...curr, id];
+    const curr    = get().favorites;
+    const updated = curr.includes(id) ? curr.filter(i => i !== id) : [...curr, id];
 
     set({ favorites: updated });
     await apiSave(updated);
@@ -61,7 +57,6 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   isFavorite: (id) => get().favorites.includes(id),
 }));
 
-/* ---------- экспорт для LayoutInit ---------- */
 export async function loadFavoritesFromApi() {
   const list = await apiLoad();
   return { favorites: list };

@@ -10,18 +10,14 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
-// Получаем Telegram user_id
+// ЖЁСТКО захардкоженный user_id
 function getUserId(): string | null {
-  function getUserId(): string | null {
-    return '535118137'; // временно — для отладки
-  }  
-
-  return null;
+  return '535118137';
 }
+
 // Сохраняем избранное: либо в Redis, либо в localStorage
 async function apiSave(list: string[]) {
   const uid = getUserId();
-
   console.log('💾 [apiSave] uid =', uid, '→', list);
 
   if (!uid) {

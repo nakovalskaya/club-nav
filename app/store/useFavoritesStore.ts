@@ -14,10 +14,6 @@ type Store = {
 function getUserId(): string | null {
   // @ts-ignore
   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-
-  console.log('🐞 Telegram initData:', telegramData);
-  console.log('🐞 user id =', telegramData?.user?.id);
-  
   return id != null ? String(id) : null;
 }
 

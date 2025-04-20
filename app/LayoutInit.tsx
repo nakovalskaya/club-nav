@@ -1,29 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFavoritesStore, loadFavoritesFromApi } from './store/useFavoritesStore';
 
 export default function LayoutInit() {
   const setFavorites = useFavoritesStore.setState;
-  const [lastSync, setLastSync] = useState<string>('не загружено');
 
   useEffect(() => {
-    async function syncFavorites(source: string) {
+    async function syncFavorites() {
       const data = await loadFavoritesFromApi();
       setFavorites(data);
-      setLastSync(`${source} — ${new Date().toLocaleTimeString()}`);
       window.dispatchEvent(new Event('favorites-updated'));
     }
 
-    syncFavorites('старт');
+    // Загрузка при старте
+    syncFavorites();
 
-    const handleFocus = () => syncFavorites('фокус/возврат');
+    // Обновление при возврате в окно
+    const handleFocus = () => syncFavorites();
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') handleFocus();
+      if (document.visibilityState === 'visible') syncFavorites();
     });
 
-    const interval = setInterval(() => syncFavorites('таймер 10с'), 10000);
+    // Автообновление раз в 10 секунд
+    const interval = setInterval(syncFavorites, 10000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);
@@ -32,19 +33,5 @@ export default function LayoutInit() {
     };
   }, []);
 
-  return (
-    <div style={{
-      position: 'fixed',
-      bottom: 8,
-      left: 8,
-      background: 'black',
-      color: 'lime',
-      fontSize: '12px',
-      padding: '4px 6px',
-      borderRadius: '4px',
-      zIndex: 9999
-    }}>
-      🔄 Синхро: {lastSync}
-    </div>
-  );
+  return null;
 }

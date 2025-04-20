@@ -1,9 +1,6 @@
+import { kv } from '@vercel/kv';
 import { NextRequest, NextResponse } from 'next/server';
 
-// демо‑хранилище в памяти; замените на БД в продакшене
-const store: Record<string, string[]> = {};
-
-// POST: сохранить список
 export async function POST(req: NextRequest) {
   const { user_id, list } = await req.json() as { user_id?: string; list?: string[] };
 
@@ -11,18 +8,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 });
   }
 
-  store[user_id] = list;
+  await kv.set(`user:${user_id}:favorites`, JSON.stringify(list));
   return NextResponse.json({ ok: true });
 }
 
-// GET: получить список
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const user_id = searchParams.get('user_id');
-
+  const user_id = new URL(req.url).searchParams.get('user_id');
   if (!user_id) {
     return NextResponse.json({ error: 'Missing user_id' }, { status: 400 });
   }
 
-  return NextResponse.json(store[user_id] ?? []);
+  const raw = await kv.get<string>(`user:${user_id}:favorites`);
+  return NextResponse.json(raw ? JSON.parse(raw) : []);
 }

@@ -12,9 +12,7 @@ type Store = {
 
 // Получаем Telegram user_id
 function getUserId(): string | null {
-  // @ts-ignore
-  const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  return id != null ? String(id) : null;
+  return '535118137'; // временно — для отладки
 }
 
 // Сохраняем избранное: либо в Redis, либо в localStorage

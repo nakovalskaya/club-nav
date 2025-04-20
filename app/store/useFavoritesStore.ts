@@ -12,10 +12,6 @@ type Store = {
 
 // Получаем Telegram user_id
 function getUserId(): string | null {
-  // @ts-ignore
-  const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  if (id != null) return String(id);
-
   // fallback для dev-режима (например, в StackBlitz)
   if (process.env.NODE_ENV === 'development') {
     return '535118137'; // хардкод на время отладки

@@ -12,10 +12,9 @@ type Store = {
 
 // Получаем Telegram user_id
 function getUserId(): string | null {
-  // fallback для dev-режима (например, в StackBlitz)
-  if (process.env.NODE_ENV === 'development') {
-    return '535118137'; // хардкод на время отладки
-  }
+  function getUserId(): string | null {
+    return '535118137'; // временно — для отладки
+  }  
 
   return null;
 }

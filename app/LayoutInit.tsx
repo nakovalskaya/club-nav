@@ -10,6 +10,9 @@ export default function LayoutInit() {
     const stored = localStorage.getItem('my-favorites');
     if (stored) {
       setFavorites({ favorites: JSON.parse(stored) });
+
+      // 🔔 Обязательно диспатчим событие, чтобы /favorites обновилась
+      window.dispatchEvent(new Event('favorites-updated'));
     }
   }, []);
 

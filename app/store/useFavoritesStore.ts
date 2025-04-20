@@ -8,20 +8,41 @@ type Store = {
   isFavorite: (id: string) => boolean;
 };
 
-function cloudAvailable() {
-  return !!window?.Telegram?.WebApp?.CloudStorage;
+/* ---------- helpers ---------- */
+
+// user.id из Telegram; в browser‑preview вернётся null
+function getUserId(): string | null {
+  // @ts-ignore
+  return window.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? null;
 }
 
-// promisify setItem
-function cloudSet(key: string, value: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    window.Telegram.WebApp.CloudStorage.setItem(
-      key,
-      value,
-      (err: any) => (err ? reject(err) : resolve())
-    );
+// POST /api/favorites
+async function apiSave(list: string[]) {
+  const uid = getUserId();
+  if (!uid) {
+    localStorage.setItem('my-favorites', JSON.stringify(list));
+    return;
+  }
+  await fetch('/api/favorites', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: uid, list }),
   });
 }
+
+// GET /api/favorites
+async function apiLoad(): Promise<string[]> {
+  const uid = getUserId();
+  if (!uid) {
+    const raw = localStorage.getItem('my-favorites');
+    return raw ? JSON.parse(raw) : [];
+  }
+  const r = await fetch('/api/favorites?user_id=' + uid);
+  if (!r.ok) return [];
+  return await r.json();
+}
+
+/* ---------- Zustand‑store ---------- */
 
 export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
@@ -33,21 +54,15 @@ export const useFavoritesStore = create<Store>((set, get) => ({
       : [...curr, id];
 
     set({ favorites: updated });
-
-    const json = JSON.stringify(updated);
-
-    if (cloudAvailable()) {
-      try {
-        await cloudSet('my-favorites', json);
-      } catch {
-        localStorage.setItem('my-favorites', json);
-      }
-    } else {
-      localStorage.setItem('my-favorites', json);
-    }
-
+    await apiSave(updated);
     window.dispatchEvent(new Event('favorites-updated'));
   },
 
   isFavorite: (id) => get().favorites.includes(id),
 }));
+
+/* ---------- экспорт для LayoutInit ---------- */
+export async function loadFavoritesFromApi() {
+  const list = await apiLoad();
+  return { favorites: list };
+}

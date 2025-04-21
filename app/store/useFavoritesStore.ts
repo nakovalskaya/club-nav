@@ -10,6 +10,7 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
+// Получаем user_id из Telegram WebApp
 function getUserId(): string | null {
   if (typeof window === 'undefined' || !window.Telegram?.WebApp) {
     console.warn('❌ Telegram WebApp не инициализирован');
@@ -33,6 +34,7 @@ async function apiSave(list: string[]) {
   console.log('💾 [apiSave] uid =', uid, '→', list);
 
   if (!uid) {
+    console.warn('⚠️ user_id не найден → сохраняем в localStorage');
     localStorage.setItem('my-favorites', JSON.stringify(list));
     return;
   }
@@ -45,11 +47,13 @@ async function apiSave(list: string[]) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ [apiSave] Redis Error:', response.status, errorText);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  } catch (err) {
-    console.error('🔥 [apiSave] Network Error:', err);
+
+    const data = await response.json();
+    console.log('✅ [apiSave] Успешно сохранено в Redis:', data);
+  } catch (error) {
+    console.error('🔥 [apiSave] Ошибка при сохранении:', error);
   }
 }
 
@@ -59,6 +63,7 @@ async function apiLoad(): Promise<string[]> {
   console.log('🔍 [apiLoad] uid =', uid);
 
   if (!uid) {
+    console.warn('⚠️ user_id не найден → читаем из localStorage');
     const raw = localStorage.getItem('my-favorites');
     return raw ? JSON.parse(raw) : [];
   }
@@ -67,20 +72,29 @@ async function apiLoad(): Promise<string[]> {
     const r = await fetch('/api/favorites?user_id=' + uid);
     if (!r.ok) {
       const error = await r.text();
-      console.error('❌ [apiLoad] API Error:', r.status, error);
+      console.error('❌ [apiLoad] Ошибка от API:', r.status, error);
       return [];
     }
 
     const json = await r.json();
     console.log('📦 [apiLoad] result =', json);
 
+    // Защита от разных форматов ответа
     if (Array.isArray(json)) return json;
     if (Array.isArray(json.value)) return json.value;
     if (typeof json === 'object' && Array.isArray(json.result)) return json.result;
+    if (typeof json === 'object' && typeof json.value === 'string') {
+      try {
+        const parsed = JSON.parse(json.value);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        console.error('📛 [apiLoad] Ошибка парсинга json.value');
+      }
+    }
 
     return [];
   } catch (err) {
-    console.error('🔥 [apiLoad] Network Error:', err);
+    console.error('🔥 [apiLoad] Сетевая ошибка:', err);
     return [];
   }
 }

@@ -10,48 +10,69 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
-// Выясняем user_id
+// Получаем user_id из Telegram WebApp
 function getUserId(): string | null {
   // @ts-ignore
   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  console.log('🧠 Telegram user_id =', id);
+  console.log('🧠 [getUserId] Telegram user_id =', id);
   return id != null ? String(id) : null;
 }
 
-// Сохраняем избранное: либо в Redis, либо в localStorage
+// ---------- Сохраняем избранное ----------
 async function apiSave(list: string[]) {
   const uid = getUserId();
   console.log('💾 [apiSave] uid =', uid, '→', list);
 
   if (!uid) {
+    console.warn('⚠️ user_id не найден → сохраняем в localStorage');
     localStorage.setItem('my-favorites', JSON.stringify(list));
     return;
   }
 
-  await fetch('/api/favorites', {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body   : JSON.stringify({ user_id: uid, list })
-  });
+  try {
+    const response = await fetch('/api/favorites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body  : JSON.stringify({ user_id: uid, list }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ [apiSave] Ошибка при сохранении в Redis:', response.status, errorText);
+    } else {
+      console.log('✅ [apiSave] Успешно сохранено в Redis');
+    }
+  } catch (err) {
+    console.error('🔥 [apiSave] Ошибка запроса:', err);
+  }
 }
 
-// Загружаем избранное: либо с Redis, либо с localStorage
+// ---------- Загружаем избранное ----------
 async function apiLoad(): Promise<string[]> {
   const uid = getUserId();
   console.log('🔍 [apiLoad] uid =', uid);
 
   if (!uid) {
+    console.warn('⚠️ user_id не найден → читаем из localStorage');
     const raw = localStorage.getItem('my-favorites');
     return raw ? JSON.parse(raw) : [];
   }
 
-  const r = await fetch('/api/favorites?user_id=' + uid);
-  if (!r.ok) return [];
+  try {
+    const r = await fetch('/api/favorites?user_id=' + uid);
+    if (!r.ok) {
+      const error = await r.text();
+      console.error('❌ [apiLoad] Ошибка от API:', r.status, error);
+      return [];
+    }
 
-  const json = await r.json();
-  console.log('📦 [apiLoad] result =', json);
-
-  return json;
+    const json = await r.json();
+    console.log('📦 [apiLoad] result =', json);
+    return json;
+  } catch (err) {
+    console.error('🔥 [apiLoad] Сетевая ошибка:', err);
+    return [];
+  }
 }
 
 /* ---------- Zustand‑store ---------- */
@@ -60,7 +81,7 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
 
   toggleFavorite: async (id) => {
-    const curr    = get().favorites;
+    const curr = get().favorites;
     const updated = curr.includes(id)
       ? curr.filter(i => i !== id)
       : [...curr, id];
@@ -73,7 +94,7 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   isFavorite: (id) => get().favorites.includes(id),
 }));
 
-/* ---------- для LayoutInit ---------- */
+/* ---------- Для LayoutInit ---------- */
 
 export async function loadFavoritesFromApi() {
   const list = await apiLoad();

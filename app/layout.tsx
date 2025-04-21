@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script'; // 👈 добавили
 import BottomNav from './components/BottomNav';
 import LayoutInit from './LayoutInit';
 
@@ -20,8 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* ✅ ВСТАВКА: Telegram WebApp SDK */}
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        {/* ✅ Telegram WebApp SDK, загружается безопасно */}
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className={inter.className}>
         <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>

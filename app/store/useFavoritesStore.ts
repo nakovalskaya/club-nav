@@ -12,18 +12,21 @@ type Store = {
 
 // Получаем user_id из Telegram WebApp
 function getUserId(): string | null {
+  if (typeof window === 'undefined' || !window.Telegram?.WebApp) {
+    console.warn('❌ Telegram WebApp не инициализирован');
+    return null;
+  }
 
-  // @ts-ignore
-   if (!window.Telegram?.WebApp?.initialized) {
-     console.warn('⚠️ Telegram WebApp is not initialized yet.');
-     return null;
-   }
- 
-  // @ts-ignore
-   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-   console.log('🧠 [getUserId] Telegram user_id =', id);
-   return id != null ? String(id) : null;
- }
+  const user = window.Telegram.WebApp.initDataUnsafe?.user;
+  if (!user || !user.id) {
+    console.warn('❌ Нет user.id из Telegram');
+    return null;
+  }
+
+  const id = String(user.id);
+  console.log('✅ Telegram user_id =', id);
+  return id;
+}
 
 // ---------- Сохраняем избранное ----------
 async function apiSave(list: string[]) {
@@ -40,7 +43,7 @@ async function apiSave(list: string[]) {
     const response = await fetch('/api/favorites', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body  : JSON.stringify({ user_id: uid, list }),
+      body: JSON.stringify({ user_id: uid, list }),
     });
 
     if (!response.ok) {

@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import BottomNav from './components/BottomNav';
-import LayoutInit from './LayoutInit'; // 👈 Импортируем компонент
+import LayoutInit from './LayoutInit';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,10 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* ✅ ВСТАВКА: Telegram WebApp SDK */}
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+      </head>
       <body className={inter.className}>
         <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
           {children}
-          <LayoutInit /> {/* 👈 Обязательно перед BottomNav */}
+          <LayoutInit />
           <BottomNav />
         </div>
       </body>

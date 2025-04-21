@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 
 const REST_URL   = process.env.UPSTASH_REDIS_REST_KV_REST_API_URL!;

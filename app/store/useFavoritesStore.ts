@@ -12,11 +12,18 @@ type Store = {
 
 // Получаем user_id из Telegram WebApp
 function getUserId(): string | null {
+
   // @ts-ignore
-  const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-  console.log('🧠 [getUserId] Telegram user_id =', id);
-  return id != null ? String(id) : null;
-}
+   if (!window.Telegram?.WebApp?.initialized) {
+     console.warn('⚠️ Telegram WebApp is not initialized yet.');
+     return null;
+   }
+ 
+  // @ts-ignore
+   const id = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+   console.log('🧠 [getUserId] Telegram user_id =', id);
+   return id != null ? String(id) : null;
+ }
 
 // ---------- Сохраняем избранное ----------
 async function apiSave(list: string[]) {

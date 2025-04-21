@@ -22,10 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* ✅ Telegram WebApp SDK, загружается безопасно */}
-        <Script
-          src="https://telegram.org/js/telegram-web-app.js"
-          strategy="beforeInteractive"
-        />
+        <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
       </head>
       <body className={inter.className}>
         <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>

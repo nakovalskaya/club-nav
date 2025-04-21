@@ -10,7 +10,6 @@ type Store = {
 
 /* ---------- helpers ---------- */
 
-// Получаем user_id из Telegram WebApp
 function getUserId(): string | null {
   if (typeof window === 'undefined' || !window.Telegram?.WebApp) {
     console.warn('❌ Telegram WebApp не инициализирован');
@@ -18,7 +17,7 @@ function getUserId(): string | null {
   }
 
   const user = window.Telegram.WebApp.initDataUnsafe?.user;
-  if (!user || !user.id) {
+  if (!user?.id) {
     console.warn('❌ Нет user.id из Telegram');
     return null;
   }
@@ -34,7 +33,6 @@ async function apiSave(list: string[]) {
   console.log('💾 [apiSave] uid =', uid, '→', list);
 
   if (!uid) {
-    console.warn('⚠️ user_id не найден → сохраняем в localStorage');
     localStorage.setItem('my-favorites', JSON.stringify(list));
     return;
   }
@@ -48,12 +46,10 @@ async function apiSave(list: string[]) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ [apiSave] Ошибка при сохранении в Redis:', response.status, errorText);
-    } else {
-      console.log('✅ [apiSave] Успешно сохранено в Redis');
+      console.error('❌ [apiSave] Redis Error:', response.status, errorText);
     }
   } catch (err) {
-    console.error('🔥 [apiSave] Ошибка запроса:', err);
+    console.error('🔥 [apiSave] Network Error:', err);
   }
 }
 
@@ -63,7 +59,6 @@ async function apiLoad(): Promise<string[]> {
   console.log('🔍 [apiLoad] uid =', uid);
 
   if (!uid) {
-    console.warn('⚠️ user_id не найден → читаем из localStorage');
     const raw = localStorage.getItem('my-favorites');
     return raw ? JSON.parse(raw) : [];
   }
@@ -72,15 +67,20 @@ async function apiLoad(): Promise<string[]> {
     const r = await fetch('/api/favorites?user_id=' + uid);
     if (!r.ok) {
       const error = await r.text();
-      console.error('❌ [apiLoad] Ошибка от API:', r.status, error);
+      console.error('❌ [apiLoad] API Error:', r.status, error);
       return [];
     }
 
     const json = await r.json();
     console.log('📦 [apiLoad] result =', json);
-    return json;
+
+    if (Array.isArray(json)) return json;
+    if (Array.isArray(json.value)) return json.value;
+    if (typeof json === 'object' && Array.isArray(json.result)) return json.result;
+
+    return [];
   } catch (err) {
-    console.error('🔥 [apiLoad] Сетевая ошибка:', err);
+    console.error('🔥 [apiLoad] Network Error:', err);
     return [];
   }
 }
@@ -91,10 +91,10 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
 
   toggleFavorite: async (id) => {
-    const curr = get().favorites;
-    const updated = curr.includes(id)
-      ? curr.filter(i => i !== id)
-      : [...curr, id];
+    const current = get().favorites || [];
+    const updated = current.includes(id)
+      ? current.filter((item) => item !== id)
+      : [...current, id];
 
     set({ favorites: updated });
     await apiSave(updated);
@@ -104,7 +104,7 @@ export const useFavoritesStore = create<Store>((set, get) => ({
   isFavorite: (id) => get().favorites.includes(id),
 }));
 
-/* ---------- Для LayoutInit ---------- */
+/* ---------- LayoutInit ---------- */
 
 export async function loadFavoritesFromApi() {
   const list = await apiLoad();

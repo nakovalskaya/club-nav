@@ -20,10 +20,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
+  
         {/* Подключаем Telegram WebApp SDK корректно */}
-        <script src="https://telegram.org/js/telegram-web-app.js" defer data-auth-data="TG_BOT_TOKEN"></script>
-      </head>
+        <head>
+  <Script
+    src="https://telegram.org/js/telegram-web-app.js"
+    strategy="beforeInteractive"
+    data-auth-data={process.env.NEXT_PUBLIC_TG_BOT_AUTH_DATA}
+  />
+</head>
       <body className={inter.className}>
         <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
           {children}

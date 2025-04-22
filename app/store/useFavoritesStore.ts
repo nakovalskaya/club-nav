@@ -8,6 +8,7 @@ type Store = {
   isFavorite: (id: string) => boolean;
 };
 
+
 /* ---------- helpers ---------- */
 
 // Получаем user_id из Telegram WebApp

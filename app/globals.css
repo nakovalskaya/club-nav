@@ -1,9 +1,10 @@
+/* === Шрифты === */
 @font-face {
   font-family: 'Pragmatica';
   src: url('/fonts/pragmatica.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block; /* 👈 убирает "прыжок" шрифта */
 }
 
 @font-face {
@@ -11,44 +12,44 @@
   src: url('/fonts/pragmatica-bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
+/* === Tailwind подключение === */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* === Цветовая палитра === */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
+  font-family: 'Pragmatica', sans-serif;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #000; /* 👈 чёткий чёрный фон без прозрачности */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  max-width: 100vw;
+  max-height: 100vh;
 }
-/* Скрытие горизонтального скроллбара */
+
+/* Убираем полосу прокрутки */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none; /* для IE и Edge */
-  scrollbar-width: none;    /* для Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
+/* Центрирование на десктопах */
 @media (min-width: 768px) {
   main {
     max-width: 480px;
@@ -57,20 +58,9 @@ body {
   }
 }
 
+/* Utility-слой */
 @layer utilities {
   .drop-shadow-glow {
     filter: drop-shadow(0 0 4px #EBDEC8) drop-shadow(0 0 8px #EBDEC8);
   }
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  overscroll-behavior: none;
-  background-color: #000;
-  touch-action: none;
-  max-width: 100vw;
-  max-height: 100vh;
 }

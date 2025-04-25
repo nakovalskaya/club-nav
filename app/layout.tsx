@@ -28,7 +28,7 @@ export default function RootLayout({
   strategy="beforeInteractive"
 />
       </head>
-      <body className={inter.className}>
+      <body>
         <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
           {children}
           <LayoutInit /> {/* Запуск загрузки избранного */}

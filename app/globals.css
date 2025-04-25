@@ -64,3 +64,7 @@ body {
     filter: drop-shadow(0 0 4px #EBDEC8) drop-shadow(0 0 8px #EBDEC8);
   }
 }
+
+html {
+  font-size: 14px; /* Было 16px по умолчанию. Можно поставить 13px, если нужно ещё компактнее */
+}

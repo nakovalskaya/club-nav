@@ -23,7 +23,7 @@ export default function Home() {
       <main className="w-full px-4 py-6 pb-24">
         {/* Сетка из 4 карточек */}
         <div className="grid grid-cols-2 gap-1 mb-4 -mt-1">
-          <a href="/efiry" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
+          <a href="/efiry" className="w-full h-[110px] rounded-2xl overflow-hidden bg-black">
             <img
               src="/efiry.jpg"
               alt="Эфиры"

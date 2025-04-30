@@ -1,13 +1,14 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import { useFavoritesStore } from '../store/useFavoritesStore';
 import { cards } from './cards';
-import FavoriteButton from '../components/FavoriteButton';
+import CardComponent from '../components/CardComponent';
 
 export default function ReelsPage() {
   const router = useRouter();
   const isFavorite = useFavoritesStore((state) => state.isFavorite);
-const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
@@ -18,12 +19,8 @@ const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
       <h1 className="text-xl font-semibold mb-4">Reels</h1>
 
       <div className="space-y-4">
-        {cards.map(({ id, title, description }) => (
-          <div key={id} className="p-4 border border-[#EBDEC8] rounded-xl relative">
-            <FavoriteButton id={id} /> {/* 👈 звезда со всеми эффектами */}
-            <h3 className="text-base font-semibold mb-1">{title}</h3>
-            <p className="text-sm text-[#a9a09b]">{description}</p>
-          </div>
+        {cards.map((card) => (
+          <CardComponent key={card.id} card={card} />
         ))}
       </div>
     </main>

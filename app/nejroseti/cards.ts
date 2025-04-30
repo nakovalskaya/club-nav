@@ -1,14 +1,12 @@
 export const cards = [
-    {
-      id: 'nejroseti-1',
-      title: 'Как использовать нейросети в контенте',
-      description: 'Гайды и промпты для генерации идей, текстов и даже видео.',
-    },
-    
-    {
-      id: 'nejroseti-2',
-      title: 'ЧатGPT для продаж',
-      description: 'Скрипты, которые реально работают и не выглядят как боты.',
-    },
+  {
+    id: 'nejroseti-1',
+    title: 'Тестовая карточка: nejroseti',
+    description: 'Описание материала из раздела nejroseti.',
+    type: 'video' as const,
+    category: 'efiry' as const,
+    image: '/images/nejroseti.jpg',
+    duration: '12:00',
+  },
   ];
 

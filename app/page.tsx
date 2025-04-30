@@ -68,7 +68,7 @@ export default function Home() {
             <a
               key={path}
               href={`/${path}`}
-              className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-5 py-2 text-sm font-normal shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
+              className="whitespace-nowrap border border-[#EBDEC8] text-[#EBDEC8] rounded-full px-6 py-2 text-sm font-normal shrink-0 bg-transparent hover:bg-black transition-all duration-200 hover:scale-[1.03]"
             >
               {label}
             </a>

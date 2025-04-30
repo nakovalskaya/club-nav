@@ -23,32 +23,32 @@ export default function Home() {
       <main className="w-full px-4 py-6 pb-24">
         {/* Сетка из 4 карточек */}
         <div className="grid grid-cols-2 gap-1 mb-4 -mt-1">
-          <a href="/efiry" className="rounded-xl overflow-hidden h-[110px] bg-black">
+          <a href="/efiry" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
             <img
               src="/efiry.jpg"
               alt="Эфиры"
-              className="w-full h-full object-cover block bg-black"
+              className="w-full h-full object-cover bg-black rounded-xl"
             />
           </a>
-          <a href="/podcasty" className="rounded-xl overflow-hidden h-[110px] bg-black">
+          <a href="/podcasty" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
             <img
               src="/podcasty.jpg"
               alt="Подкасты"
-              className="w-full h-full object-cover block bg-black"
+              className="w-full h-full object-cover bg-black rounded-xl"
             />
           </a>
-          <a href="/kursy" className="rounded-xl overflow-hidden h-[110px] bg-black">
+          <a href="/kursy" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
             <img
               src="/kursy.jpg"
               alt="Курсы"
-              className="w-full h-full object-cover block bg-black"
+              className="w-full h-full object-cover bg-black rounded-xl"
             />
           </a>
-          <a href="/gidy" className="rounded-xl overflow-hidden h-[110px] bg-black">
+          <a href="/gidy" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
             <img
               src="/gidy.jpg"
               alt="Гиды"
-              className="w-full h-full object-cover block bg-black"
+              className="w-full h-full object-cover bg-black rounded-xl"
             />
           </a>
         </div>

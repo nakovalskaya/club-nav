@@ -68,3 +68,14 @@ body {
 html {
   font-size: 14px; /* Было 16px по умолчанию. Можно поставить 13px, если нужно ещё компактнее */
 }
+/* Устраняем белые края у img в Telegram WebView */
+img {
+  background-color: transparent !important;
+  border-radius: inherit;
+  display: block;
+}
+
+/* Жёсткий чёрный фон всей страницы */
+html, body {
+  background-color: #000 !important;
+}

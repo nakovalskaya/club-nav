@@ -4,11 +4,29 @@ import { useRouter } from 'next/navigation';
 import { useFavoritesStore } from '../store/useFavoritesStore';
 import { cards } from './cards';
 import CardComponent from '../components/CardComponent';
+import { useEffect, useState } from 'react';
+import LoadingWrapper from '../components/LoadingWrapper';
 
 export default function ProdazhiPage() {
   const router = useRouter();
   const isFavorite = useFavoritesStore((state) => state.isFavorite);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-[#EBDEC8]">
+        <LoadingWrapper isLoading={true}>
+          <div />
+        </LoadingWrapper>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">

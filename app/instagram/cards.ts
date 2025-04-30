@@ -7,6 +7,7 @@ export const cards = [
     category: 'gidy' as const,
     icon: '/icons/guide.svg',
     duration: '12:00',
+    recommended: true,
   },
   ];
   

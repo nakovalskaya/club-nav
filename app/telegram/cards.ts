@@ -7,6 +7,7 @@ export const cards = [
     category: 'efiry' as const,
     image: '/images/telegram.jpg',
     duration: '12:00',
+    recommended: true,
   },
   ];
   

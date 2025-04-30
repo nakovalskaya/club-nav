@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { useFavoritesStore } from './store/useFavoritesStore';
-import FavoriteButton from './components/FavoriteButton';
 import { allCards } from './data/allCards';
+import CardComponent from './components/CardComponent';
 
 const recommendedCards = allCards.filter(card => card.recommended);
 
 export default function Home() {
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
-const isFavorite = useFavoritesStore((state) => state.isFavorite);
+  const isFavorite = useFavoritesStore((state) => state.isFavorite);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Telegram' in window) {
@@ -64,17 +64,9 @@ const isFavorite = useFavoritesStore((state) => state.isFavorite);
           <>
             <h2 className="text-lg font-semibold mt-8 mb-4 text-[#EBDEC8]">Рекомендованные</h2>
             <div className="space-y-4">
-              {recommendedCards.map(({ id, title, description }) => {
-                const fav = isFavorite(id);
-
-                return (
-                  <div key={id} className="p-4 border border-[#EBDEC8] rounded-xl relative">
-                    <FavoriteButton id={id} />
-                    <h3 className="text-[#EBDEC8] text-base font-semibold mb-1">{title}</h3>
-                    <p className="text-sm text-[#a9a09b]">{description}</p>
-                  </div>
-                );
-              })}
+              {recommendedCards.map((card) => (
+                <CardComponent key={card.id} card={card} />
+              ))}
             </div>
           </>
         )}

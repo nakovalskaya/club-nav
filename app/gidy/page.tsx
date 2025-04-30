@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { allCards } from '../data/allCards';
-import CardComponent from '../components/CardComponent';
+import CardComponent from '../components/CardComponent'; 
 
 export default function GidyPage() {
   const router = useRouter();

@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { useFavoritesStore } from './store/useFavoritesStore';
+import FavoriteButton from './components/FavoriteButton';
 import { allCards } from './data/allCards';
-import CardComponent from './components/CardComponent';
 
 const recommendedCards = allCards.filter(card => card.recommended);
 
 export default function Home() {
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
-  const isFavorite = useFavoritesStore((state) => state.isFavorite);
+const isFavorite = useFavoritesStore((state) => state.isFavorite);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Telegram' in window) {
@@ -19,42 +19,26 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-[#EBDEC8] font-sans flex justify-center">
+    <div className="min-h-screen bg-black text-white font-sans flex justify-center">
       <main className="w-full px-4 py-6 pb-24">
         {/* Сетка из 4 карточек */}
         <div className="grid grid-cols-2 gap-1 mb-4 -mt-1">
-          <a href="/efiry" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
-            <img
-              src="/efiry.jpg"
-              alt="Эфиры"
-              className="w-full h-full object-cover bg-black rounded-xl"
-            />
+          <a href="/efiry" className="rounded-xl overflow-hidden h-[110px]">
+            <img src="/efiry.jpg" alt="Эфиры" className="w-full h-full object-cover" />
           </a>
-          <a href="/podcasty" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
-            <img
-              src="/podcasty.jpg"
-              alt="Подкасты"
-              className="w-full h-full object-cover bg-black rounded-xl"
-            />
+          <a href="/podcasty" className="rounded-xl overflow-hidden h-[110px]">
+            <img src="/podcasty.jpg" alt="Подкасты" className="w-full h-full object-cover" />
           </a>
-          <a href="/kursy" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
-            <img
-              src="/kursy.jpg"
-              alt="Курсы"
-              className="w-full h-full object-cover bg-black rounded-xl"
-            />
+          <a href="/kursy" className="rounded-xl overflow-hidden h-[110px]">
+            <img src="/kursy.jpg" alt="Курсы" className="w-full h-full object-cover" />
           </a>
-          <a href="/gidy" className="w-full h-[110px] rounded-xl overflow-hidden bg-black">
-            <img
-              src="/gidy.jpg"
-              alt="Гиды"
-              className="w-full h-full object-cover bg-black rounded-xl"
-            />
+          <a href="/gidy" className="rounded-xl overflow-hidden h-[110px]">
+            <img src="/gidy.jpg" alt="Гиды" className="w-full h-full object-cover" />
           </a>
         </div>
 
         {/* Разделы */}
-        <h2 className="text-lg font-semibold mb-2">Разделы</h2>
+        <h2 className="text-lg font-semibold mb-2 text-[#EBDEC8]">Разделы</h2>
         <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide scroll-smooth">
           {[
             { label: 'воронки', path: 'voronki' },
@@ -78,11 +62,19 @@ export default function Home() {
         {/* Рекомендованные карточки */}
         {recommendedCards.length > 0 && (
           <>
-            <h2 className="text-lg font-semibold mt-8 mb-4">Рекомендованные</h2>
+            <h2 className="text-lg font-semibold mt-8 mb-4 text-[#EBDEC8]">Рекомендованные</h2>
             <div className="space-y-4">
-              {recommendedCards.map((card) => (
-                <CardComponent key={card.id} card={card} />
-              ))}
+              {recommendedCards.map(({ id, title, description }) => {
+                const fav = isFavorite(id);
+
+                return (
+                  <div key={id} className="p-4 border border-[#EBDEC8] rounded-xl relative">
+                    <FavoriteButton id={id} />
+                    <h3 className="text-[#EBDEC8] text-base font-semibold mb-1">{title}</h3>
+                    <p className="text-sm text-[#a9a09b]">{description}</p>
+                  </div>
+                );
+              })}
             </div>
           </>
         )}

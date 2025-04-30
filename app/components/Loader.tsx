@@ -2,10 +2,17 @@
 
 export default function Loader() {
   return (
-    <div className="flex gap-2">
-      <div className="w-4 h-4 bg-[#991428] rounded-full animate-bounce [animation-delay:-0.3s]" />
-      <div className="w-4 h-4 bg-[#991428] rounded-full animate-bounce [animation-delay:-0.15s]" />
-      <div className="w-4 h-4 bg-[#991428] rounded-full animate-bounce" />
+    <div className="flex gap-1 items-end">
+      {[0, 1, 2].map(i => (
+        <div
+          key={i}
+          className="w-1.5 h-5 bg-[#991428] rounded-full"
+          style={{
+            animation: 'loader-bars 0.8s ease-in-out infinite',
+            animationDelay: `${i * 0.15}s`,
+          }}
+        />
+      ))}
     </div>
   );
 }

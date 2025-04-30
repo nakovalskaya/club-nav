@@ -18,29 +18,21 @@ export default function ProdazhiPage() {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black text-[#EBDEC8]">
-        <LoadingWrapper isLoading={true}>
-          <div />
-        </LoadingWrapper>
-      </div>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
-      <button onClick={() => router.back()} className="mb-4">
-        <img src="/back.svg" alt="Назад" className="w-7 h-7" />
-      </button>
+    <LoadingWrapper isLoading={loading}>
+      <main className="min-h-screen bg-black text-[#EBDEC8] p-4 pb-24">
+        <button onClick={() => router.back()} className="mb-4">
+          <img src="/back.svg" alt="Назад" className="w-7 h-7" />
+        </button>
 
-      <h1 className="text-xl font-semibold mb-4">Продажи</h1>
+        <h1 className="text-xl font-semibold mb-4">Продажи</h1>
 
-      <div className="space-y-4">
-        {cards.map((card) => (
-          <CardComponent key={card.id} card={card} />
-        ))}
-      </div>
-    </main>
+        <div className="space-y-4">
+          {cards.map((card) => (
+            <CardComponent key={card.id} card={card} />
+          ))}
+        </div>
+      </main>
+    </LoadingWrapper>
   );
 }

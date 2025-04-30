@@ -17,10 +17,10 @@ export default function FavoritesPage() {
         useFavoritesStore.getState().favorites.includes(item.id)
       );
       setSaved(updated);
-      setLoading(false); // отключаем загрузку
+      setLoading(false);
     };
 
-    setTimeout(updateSaved, 5000); // искусственная задержка 1.5 сек
+    setTimeout(updateSaved, 5000); // искусственная задержка 5 сек
     window.addEventListener('favorites-updated', updateSaved);
     return () => window.removeEventListener('favorites-updated', updateSaved);
   }, []);

@@ -9,13 +9,17 @@ type Props = {
 };
 
 export default function LoadingWrapper({ isLoading, children }: Props) {
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <Loader />
-      </div>
-    );
-  }
+  return (
+    <>
+      {/* контент всегда в DOM */}
+      {children}
 
-  return <>{children}</>;
+      {/* затемнённая шторка + лоадер поверх */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center transition-opacity duration-300">
+          <Loader />
+        </div>
+      )}
+    </>
+  );
 }

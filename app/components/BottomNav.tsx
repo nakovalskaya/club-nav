@@ -28,7 +28,7 @@ export default function BottomNav() {
             <div className="relative w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out">
               {/* Палочка сверху */}
               <div
-                className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-5 h-1.5 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
+                className={`absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1.5 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
                   isActive ? 'opacity-100' : 'opacity-0'
                 }`}
               ></div>

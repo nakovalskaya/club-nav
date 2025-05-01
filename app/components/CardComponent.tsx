@@ -30,9 +30,9 @@ export default function CardComponent({ card }: Props) {
 
       {/* ПОДКАСТЫ И ГИДЫ: иконка + длительность под иконкой */}
       {type !== 'video' && (
-        <div className="flex items-center gap-3 p-4">
+        <div className="flex items-start gap-3 pl-2 pr-4 py-4">
           {icon && (
-            <div className="flex flex-col items-center justify-start">
+            <div className="flex flex-col items-center justify-start w-[44px]">
               <img src={icon} alt="" width={44} height={44} />
               {duration && (
                 <span className="text-[10px] text-[#EBDEC8] opacity-70 mt-1">
@@ -41,7 +41,7 @@ export default function CardComponent({ card }: Props) {
               )}
             </div>
           )}
-          <div className="flex-1">
+          <div className="flex-1 flex flex-col justify-center">
             <h3 className="text-base font-semibold">{title}</h3>
             <p className="text-sm text-[#a9a09b]">{description}</p>
           </div>

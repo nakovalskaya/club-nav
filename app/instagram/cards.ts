@@ -8,6 +8,7 @@ export const cards = [
     icon: '/icons/guide.svg',
     duration: '40:03',
     recommended: true,
+    link: 'https://t.me/nakovalskaa/297',
   },
   ];
   

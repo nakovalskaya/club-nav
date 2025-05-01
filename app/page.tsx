@@ -66,6 +66,7 @@ export default function Home() {
               { label: 'продажи', path: 'prodazhi' },
               { label: 'instagram', path: 'instagram' },
               { label: 'telegram', path: 'telegram' },
+              { label: 'маркетинг', path: 'marketing' },
               { label: 'threads', path: 'threads' },
               { label: 'нейросети', path: 'nejroseti' },
               { label: 'reels', path: 'reels' },

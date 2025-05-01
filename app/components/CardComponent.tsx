@@ -25,9 +25,13 @@ export default function CardComponent({ card }: Props) {
 
   const Wrapper = ({ children }: { children: React.ReactNode }) =>
     link ? (
-      <button onClick={handleClick} className="block w-full text-left">
+      <div
+        role="button"
+        onClick={handleClick}
+        className="block w-full text-left cursor-pointer"
+      >
         {children}
-      </button>
+      </div>
     ) : (
       <>{children}</>
     );

@@ -17,6 +17,7 @@ export type Card = {
   icon?: string;
   duration?: string;
   recommended?: boolean;
+  link?: string;
 };
 
 export const allCards: Card[] = [

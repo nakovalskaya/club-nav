@@ -1,11 +1,11 @@
 export const cards = [
     {
       id: 'marketing-1',
-      title: 'Как продавать без сториз и прогревов',
-      description: 'Карточка из раздела маркетинг. Подходит для новичков и экспертов.',
-      type: 'guide' as const,
+      title: 'Карта эмпатии клиента',
+      description: 'Как влезть в голову своего клиента и понять его мотивы. Новый взгляд на целевую аудиторию.',
+      type: 'video' as const,
       category: 'efiry' as const,
-      icon: '/icons/guide.svg',
+      image: '/images/prodazhi.png',
       duration: '35:12',
       recommended: true,
       link: 'https://t.me/your_channel/marketing',

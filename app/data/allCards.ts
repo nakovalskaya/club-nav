@@ -6,6 +6,8 @@ import { cards as telegramCards } from '../telegram/cards';
 import { cards as threadsCards } from '../threads/cards';
 import { cards as nejrosetiCards } from '../nejroseti/cards';
 import { cards as reelsCards } from '../reels/cards';
+import { cards as marketingCards } from '../marketing/cards';
+import { cards as mysliCards } from '../mysli/cards';
 
 export type Card = {
   id: string;
@@ -28,4 +30,6 @@ export const allCards: Card[] = [
   ...threadsCards,
   ...nejrosetiCards,
   ...reelsCards,
+  ...marketingCards,
+  ...mysliCards,
 ];

@@ -11,7 +11,6 @@ export default function MysliPage() {
   const router = useRouter();
   const isFavorite = useFavoritesStore((state) => state.isFavorite);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

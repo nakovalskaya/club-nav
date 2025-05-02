@@ -39,7 +39,13 @@ export default function CardComponent({ card }: Props) {
   return (
     <Wrapper>
       <div className="border border-[#EBDEC8] rounded-xl overflow-hidden relative bg-black">
-        <FavoriteButton id={card.id} />
+        {/* ✨ Обновили: добавили stopPropagation */}
+        <div
+          className="absolute top-2 right-2 z-10"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <FavoriteButton id={card.id} />
+        </div>
 
         {/* ВИДЕО: картинка + длительность (в левом нижнем углу) */}
         {type === 'video' && image && (

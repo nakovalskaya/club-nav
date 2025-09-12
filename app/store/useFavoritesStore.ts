@@ -91,3 +91,10 @@ export const useFavoritesStore = create<Store>((set, get) => ({
     await useFavoritesStore.getState().hydrate();
   } catch {}
 })();
+// --- Back-compat для старого кода ---
+// Раньше вызывали loadFavoritesFromApi() и ждали { favorites }.
+// Оставим тот же интерфейс поверх новой hydrate().
+export async function loadFavoritesFromApi() {
+  await useFavoritesStore.getState().hydrate();
+  return { favorites: useFavoritesStore.getState().favorites };
+}

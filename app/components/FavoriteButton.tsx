@@ -1,7 +1,7 @@
 'use client';
 
 import { useFavoritesStore } from '../store/useFavoritesStore';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 type Props = { id: string };
 
@@ -12,36 +12,22 @@ export default function FavoriteButton({ id }: Props) {
 
   const fav = favorites.includes(id);
 
-  const stopAll = (e: React.SyntheticEvent | React.MouseEvent) => {
-    e.preventDefault?.();
-    e.stopPropagation?.();
-    // @ts-ignore
-    e?.nativeEvent?.stopImmediatePropagation?.();
-  };
-
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    stopAll(e);
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 🔑 вот это спасает от Wrapper
     toggleFavorite(id);
     window.dispatchEvent(new Event('favorites-updated'));
     setClicked(true);
     setTimeout(() => setClicked(false), 600);
-  }, [id, toggleFavorite]);
+  };
 
   return (
-    <div
-      className="absolute top-2 right-2 z-10"
-      onClickCapture={stopAll} // блокируем родителя на фазе захвата
-      style={{ pointerEvents: 'auto' }}
-    >
-      {/* Градиентный фон-кружочек — как у тебя было */}
+    <div className="absolute top-2 right-2 z-10">
+      {/* тёмный градиентный кружок под звездой */}
       <div className="absolute inset-0 w-8 h-8 bg-gradient-to-br from-black/80 to-black/40 rounded-full blur-sm z-[-1]" />
 
       <button
         type="button"
         onClick={handleClick}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleClick(e as any);
-        }}
         className="w-8 h-8 flex items-center justify-center transition-transform duration-300 bg-transparent p-1 rounded-full"
         aria-pressed={fav}
         aria-label={fav ? 'Удалить из избранного' : 'Добавить в избранное'}
@@ -65,7 +51,9 @@ export default function FavoriteButton({ id }: Props) {
       </button>
 
       <style jsx>{`
-        .glow { filter: drop-shadow(0 0 6px #EFC988); }
+        .glow {
+          filter: drop-shadow(0 0 6px #EFC988);
+        }
       `}</style>
     </div>
   );

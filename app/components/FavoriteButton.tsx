@@ -1,45 +1,78 @@
 'use client';
 
 import { useFavoritesStore } from '../store/useFavoritesStore';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 type Props = { id: string };
 
 export default function FavoriteButton({ id }: Props) {
   const favorites = useFavoritesStore((s) => s.favorites);
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
+
+  // Было у тебя — оставляю
   const [clicked, setClicked] = useState(false);
+
+  // Новое: флаг "анимация снятия избранного идёт"
+  const [animOut, setAnimOut] = useState(false);
 
   const fav = favorites.includes(id);
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // 🔑 вот это спасает от Wrapper
+  // Пока крутится снятие — отображаем заполнённую звезду,
+  // чтобы она не исчезала до конца анимации.
+  const displayFav = fav || animOut;
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Снятие из избранного: крутим, ПАРКУЕМ удаление до конца анимации
+    if (fav) {
+      setClicked(true);
+      setAnimOut(true);
+
+      // Дай анимации отыграть, затем реально уберём из избранного
+      const DURATION = 600; // у тебя так и было
+      setTimeout(() => {
+        toggleFavorite(id);
+        setAnimOut(false);
+        setClicked(false);
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('favorites-updated'));
+        }
+      }, DURATION);
+
+      return;
+    }
+
+    // Добавление в избранное: сразу ставим, анимация как раньше
     toggleFavorite(id);
-    window.dispatchEvent(new Event('favorites-updated'));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('favorites-updated'));
+    }
     setClicked(true);
     setTimeout(() => setClicked(false), 600);
-  };
+  }, [fav, id, toggleFavorite]);
 
   return (
     <div className="absolute top-2 right-2 z-10">
-      {/* тёмный градиентный кружок под звездой */}
+      {/* твой тёмный градиентный кружок под звёздой */}
       <div className="absolute inset-0 w-8 h-8 bg-gradient-to-br from-black/80 to-black/40 rounded-full blur-sm z-[-1]" />
 
       <button
         type="button"
         onClick={handleClick}
         className="w-8 h-8 flex items-center justify-center transition-transform duration-300 bg-transparent p-1 rounded-full"
-        aria-pressed={fav}
-        aria-label={fav ? 'Удалить из избранного' : 'Добавить в избранное'}
+        aria-pressed={displayFav}
+        aria-label={displayFav ? 'Удалить из избранного' : 'Добавить в избранное'}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill={fav ? '#EFC988' : 'none'}
-          stroke={fav ? '#EFC988' : '#D2BCA7'}
-          className={`w-6 h-6 transition-all duration-500 ease-in-out ${
-            fav ? 'rotate-[360deg] scale-110' : 'scale-100'
-          } ${fav && clicked ? 'glow' : ''}`}
+          fill={displayFav ? '#EFC988' : 'none'}
+          stroke={displayFav ? '#EFC988' : '#D2BCA7'}
+          className={`w-6 h-6 transition-all duration-500 ease-in-out
+            ${displayFav ? 'rotate-[360deg] scale-110' : 'scale-100'}
+            ${displayFav && clicked ? 'glow' : ''}`}
         >
           <path
             strokeLinecap="round"
@@ -51,9 +84,7 @@ export default function FavoriteButton({ id }: Props) {
       </button>
 
       <style jsx>{`
-        .glow {
-          filter: drop-shadow(0 0 6px #EFC988);
-        }
+        .glow { filter: drop-shadow(0 0 6px #EFC988); }
       `}</style>
     </div>
   );

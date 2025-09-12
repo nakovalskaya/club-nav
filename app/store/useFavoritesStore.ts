@@ -5,80 +5,89 @@ type Store = {
   favorites: string[];
   toggleFavorite: (id: string) => void;
   isFavorite: (id: string) => boolean;
+  hydrate: () => Promise<void>;
 };
 
 const LS_KEY = 'favorites';
+const TG = (typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : undefined);
+const CS = TG?.CloudStorage;
 
-// вытаскиваем user_id из Telegram
-function getUserId(): string | null {
-  if (typeof window === 'undefined') return null;
-  // @ts-ignore
-  const user = window?.Telegram?.WebApp?.initDataUnsafe?.user;
-  return user?.id ? String(user.id) : null;
+// ——— helpers ———
+const hasCloud = () => Boolean(CS && typeof CS.getItem === 'function');
+
+function csGetItem(key: string): Promise<string | null> {
+  return new Promise((resolve) => {
+    if (!hasCloud()) return resolve(null);
+    CS.getItem(key, (err: any, value: string | null) => resolve(err ? null : value));
+  });
 }
 
-// загрузка избранного
-async function apiLoad(): Promise<string[]> {
-  try {
-    const uid = getUserId();
-    if (!uid) {
-      const raw = localStorage.getItem(LS_KEY);
-      return raw ? JSON.parse(raw) : [];
-    }
+function csSetItem(key: string, value: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (!hasCloud()) return resolve(false);
+    // на всякий — запрашиваем право записи (некоторым ботам нужно)
+    TG?.requestWriteAccess?.();
+    CS.setItem(key, value, (err: any) => resolve(!err));
+  });
+}
 
-    const res = await fetch(`/api/favorites?user_id=${uid}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error('API GET failed');
-    const data = await res.json();
-    return Array.isArray(data?.favorites) ? data.favorites : [];
-  } catch {
+const readLocal = (): string[] => {
+  try {
     const raw = localStorage.getItem(LS_KEY);
     return raw ? JSON.parse(raw) : [];
-  }
-}
+  } catch { return []; }
+};
 
-// сохранение избранного
-async function apiSave(list: string[]) {
-  try {
-    // сохраняем локально всегда
-    localStorage.setItem(LS_KEY, JSON.stringify(list));
+const writeLocal = (list: string[]) => {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch {}
+};
 
-    const uid = getUserId();
-    if (!uid) return; // если нет user_id, ничего на сервер не шлём
+// один ключ «favorites» со списком id — проще и надёжнее
+const CLOUD_KEY = 'favorites';
 
-    await fetch('/api/favorites', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: uid, list }),
-    });
-  } catch {
-    // если сервер упал — локальное сохранение остаётся
-  }
-}
-
+// ——— Zustand store ———
 export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
+
+  isFavorite: (id) => get().favorites.includes(id),
+
   toggleFavorite: (id) => {
     const setNow = new Set(get().favorites);
     setNow.has(id) ? setNow.delete(id) : setNow.add(id);
-
     const updated = Array.from(setNow);
 
-    // обновляем Zustand сразу (звезда загорается мгновенно)
+    // 1) мгновенно обновляем UI
     set({ favorites: updated });
 
-    // шлём событие для синхронизации страниц
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new Event('favorites-updated'));
-    }
+    // 2) локальный бэкап всегда
+    if (typeof window !== 'undefined') writeLocal(updated);
 
-    // сохраняем локально + пытаемся отправить на сервер
-    void apiSave(updated);
+    // 3) пихаем в Telegram CloudStorage (если доступен)
+    (async () => {
+      const ok = await csSetItem(CLOUD_KEY, JSON.stringify(updated));
+      // если облако недоступно — ничего страшного, останемся на localStorage
+      if (!ok) return;
+      // синхро-событие для страниц/листингов
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('favorites-updated'));
+    })();
   },
-  isFavorite: (id) => get().favorites.includes(id),
+
+  // начальная загрузка
+  hydrate: async () => {
+    let list = readLocal();
+    // если есть CloudStorage — он приоритетнее
+    const cloudRaw = await csGetItem(CLOUD_KEY);
+    if (cloudRaw) {
+      try { list = JSON.parse(cloudRaw); } catch {}
+    }
+    set({ favorites: Array.isArray(list) ? list : [] });
+    if (typeof window !== 'undefined') window.dispatchEvent(new Event('favorites-updated'));
+  },
 }));
 
-// начальная загрузка (при открытии приложения)
-export async function loadFavoritesFromApi() {
-  const list = await apiLoad();
-  return { favorites: list };
-}
+// Авто-инициализация при первом импорте (без await — не блокируем UI)
+(async () => {
+  try {
+    await useFavoritesStore.getState().hydrate();
+  } catch {}
+})();

@@ -15,13 +15,11 @@ export default function FavoritesPage() {
   const mountedRef = useRef(false);
   const debounceRef = useRef<number | null>(null);
 
-  // вычисление списка избранного
   const computeSaved = () =>
     allCards.filter((item) =>
       useFavoritesStore.getState().favorites.includes(item.id)
     );
 
-  // лёгкая проверка, чтобы не сетать то же самое
   const sameByIds = (a: Card[], b: Card[]) => {
     if (a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) if (a[i].id !== b[i].id) return false;
@@ -34,26 +32,23 @@ export default function FavoritesPage() {
       if (!mountedRef.current) return;
       const next = computeSaved();
       setSaved((prev) => (sameByIds(prev, next) ? prev : next));
-      // loading трогаем только на первом входе
-    }, 120);
+      // не трогаем loading здесь, чтобы не мигал индикатор
+    }, 100);
   };
 
   useEffect(() => {
     mountedRef.current = true;
 
-    // твоя искусственная задержка 5 сек — оставляю
-    const initial = window.setTimeout(() => {
-      if (!mountedRef.current) return;
-      const next = computeSaved();
-      setSaved(next);
-      setLoading(false);
-    }, 5000);
+    // 1) Мгновенный старт без ожиданий: рендерим то, что уже в сторе
+    const initial = computeSaved();
+    setSaved(initial);
+    setLoading(false);
 
-    // слушаем одно событие и не спамим апдейтами
+    // 2) Слушаем одно событие и обновляем мягко
     const onFavUpdate = () => debouncedUpdate();
     window.addEventListener('favorites-updated', onFavUpdate);
 
-    // когда вернулись на вкладку/экран — аккуратно обновим без моргания
+    // 3) Возврат на вкладку — обновим аккуратно, без «мигания»
     const onVisible = () => {
       if (document.visibilityState === 'visible') debouncedUpdate();
     };
@@ -61,7 +56,6 @@ export default function FavoritesPage() {
 
     return () => {
       mountedRef.current = false;
-      window.clearTimeout(initial);
       if (debounceRef.current) window.clearTimeout(debounceRef.current);
       window.removeEventListener('favorites-updated', onFavUpdate);
       document.removeEventListener('visibilitychange', onVisible);
@@ -77,7 +71,6 @@ export default function FavoritesPage() {
           <p className="text-sm text-[#9e948f]">Пока пусто. Добавь что-нибудь ⭐️</p>
         ) : (
           <div className="space-y-4">
-            {/* initial={false} — не проигрываем «вход» заново при каждом апдейте */}
             <AnimatePresence initial={false}>
               {saved.map((card) => (
                 <motion.div

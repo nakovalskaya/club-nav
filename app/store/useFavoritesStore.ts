@@ -1,5 +1,4 @@
 'use client';
-
 import { create } from 'zustand';
 
 type Store = {
@@ -8,119 +7,77 @@ type Store = {
   isFavorite: (id: string) => boolean;
 };
 
+const LS_KEY = 'favorites';
 
-/* ---------- helpers ---------- */
-
-// Получаем user_id из Telegram WebApp
+// вытаскиваем user_id из Telegram
 function getUserId(): string | null {
-  if (typeof window === 'undefined' || !window.Telegram?.WebApp) {
-    console.warn('❌ Telegram WebApp не инициализирован');
-    return null;
-  }
-
-  const user = window.Telegram.WebApp.initDataUnsafe?.user;
-  if (!user?.id) {
-    console.warn('❌ Нет user.id из Telegram');
-    return null;
-  }
-
-  const id = String(user.id);
-  console.log('✅ Telegram user_id =', id);
-  return id;
+  if (typeof window === 'undefined') return null;
+  // @ts-ignore
+  const user = window?.Telegram?.WebApp?.initDataUnsafe?.user;
+  return user?.id ? String(user.id) : null;
 }
 
-// ---------- Сохраняем избранное ----------
-async function apiSave(list: string[]) {
-  const uid = getUserId();
-  console.log('💾 [apiSave] uid =', uid, '→', list);
-
-  if (!uid) {
-    console.warn('⚠️ user_id не найден → сохраняем в localStorage');
-    localStorage.setItem('my-favorites', JSON.stringify(list));
-    return;
-  }
-
+// загрузка избранного
+async function apiLoad(): Promise<string[]> {
   try {
-    const response = await fetch('/api/favorites', {
+    const uid = getUserId();
+    if (!uid) {
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }
+
+    const res = await fetch(`/api/favorites?user_id=${uid}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('API GET failed');
+    const data = await res.json();
+    return Array.isArray(data?.favorites) ? data.favorites : [];
+  } catch {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }
+}
+
+// сохранение избранного
+async function apiSave(list: string[]) {
+  try {
+    // сохраняем локально всегда
+    localStorage.setItem(LS_KEY, JSON.stringify(list));
+
+    const uid = getUserId();
+    if (!uid) return; // если нет user_id, ничего на сервер не шлём
+
+    await fetch('/api/favorites', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: uid, list }),
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log('✅ [apiSave] Успешно сохранено в Redis:', data);
-  } catch (error) {
-    console.error('🔥 [apiSave] Ошибка при сохранении:', error);
+  } catch {
+    // если сервер упал — локальное сохранение остаётся
   }
 }
-
-// ---------- Загружаем избранное ----------
-async function apiLoad(): Promise<string[]> {
-  const uid = getUserId();
-  console.log('🔍 [apiLoad] uid =', uid);
-
-  if (!uid) {
-    console.warn('⚠️ user_id не найден → читаем из localStorage');
-    const raw = localStorage.getItem('my-favorites');
-    return raw ? JSON.parse(raw) : [];
-  }
-
-  try {
-    const r = await fetch('/api/favorites?user_id=' + uid);
-    if (!r.ok) {
-      const error = await r.text();
-      console.error('❌ [apiLoad] Ошибка от API:', r.status, error);
-      return [];
-    }
-
-    const json = await r.json();
-    console.log('📦 [apiLoad] result =', json);
-
-    // Защита от разных форматов ответа
-    if (Array.isArray(json)) return json;
-    if (Array.isArray(json.value)) return json.value;
-    if (typeof json === 'object' && Array.isArray(json.result)) return json.result;
-    if (typeof json === 'object' && typeof json.value === 'string') {
-      try {
-        const parsed = JSON.parse(json.value);
-        if (Array.isArray(parsed)) return parsed;
-      } catch (e) {
-        console.error('📛 [apiLoad] Ошибка парсинга json.value');
-      }
-    }
-
-    return [];
-  } catch (err) {
-    console.error('🔥 [apiLoad] Сетевая ошибка:', err);
-    return [];
-  }
-}
-
-/* ---------- Zustand‑store ---------- */
 
 export const useFavoritesStore = create<Store>((set, get) => ({
   favorites: [],
+  toggleFavorite: (id) => {
+    const setNow = new Set(get().favorites);
+    setNow.has(id) ? setNow.delete(id) : setNow.add(id);
 
-  toggleFavorite: async (id) => {
-    const current = get().favorites || [];
-    const updated = current.includes(id)
-      ? current.filter((item) => item !== id)
-      : [...current, id];
+    const updated = Array.from(setNow);
 
+    // обновляем Zustand сразу (звезда загорается мгновенно)
     set({ favorites: updated });
-    await apiSave(updated);
-    window.dispatchEvent(new Event('favorites-updated'));
-  },
 
+    // шлём событие для синхронизации страниц
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('favorites-updated'));
+    }
+
+    // сохраняем локально + пытаемся отправить на сервер
+    void apiSave(updated);
+  },
   isFavorite: (id) => get().favorites.includes(id),
 }));
 
-/* ---------- LayoutInit ---------- */
-
+// начальная загрузка (при открытии приложения)
 export async function loadFavoritesFromApi() {
   const list = await apiLoad();
   return { favorites: list };

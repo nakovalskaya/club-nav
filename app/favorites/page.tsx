@@ -6,6 +6,7 @@ import type { Card } from '../data/allCards';
 import { useEffect, useState } from 'react';
 import CardComponent from '../components/CardComponent';
 import LoadingWrapper from '../components/LoadingWrapper';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function FavoritesPage() {
   const [saved, setSaved] = useState<Card[]>([]);
@@ -34,9 +35,19 @@ export default function FavoritesPage() {
           <p className="text-sm text-[#9e948f]">Пока пусто. Добавь что-нибудь ⭐️</p>
         ) : (
           <div className="space-y-4">
-            {saved.map((card) => (
-              <CardComponent key={card.id} card={card} />
-            ))}
+            <AnimatePresence>
+              {saved.map((card) => (
+                <motion.div
+                  key={card.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <CardComponent card={card} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </main>

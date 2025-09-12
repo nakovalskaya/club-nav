@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useFavoritesStore } from './store/useFavoritesStore';
 import { allCards } from './data/allCards';
 import CardComponent from './components/CardComponent';
-import LoadingWrapper from './components/LoadingWrapper';
+import LoadingWrapper from './components/LoadingWrapper'; 
+
 
 const recommendedCards = allCards.filter(card => card.recommended);
 

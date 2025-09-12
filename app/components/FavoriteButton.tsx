@@ -20,7 +20,7 @@ export default function FavoriteButton({ id }: Props) {
     const DURATION = 600;
 
     if (fav) {
-      // начинаем анимацию удаления
+      // начинаем анимацию снятия
       setAnimating('out');
       setTimeout(() => {
         toggleFavorite(id);
@@ -40,7 +40,7 @@ export default function FavoriteButton({ id }: Props) {
     }
   }, [fav, id, toggleFavorite]);
 
-  // Показываем звезду, если она есть или крутится анимация удаления
+  // Показываем звезду, если она в избранном или анимируется снятие
   const displayFav = fav || animating === 'out';
 
   return (
@@ -59,8 +59,9 @@ export default function FavoriteButton({ id }: Props) {
           fill={displayFav ? '#EFC988' : 'none'}
           stroke={displayFav ? '#EFC988' : '#D2BCA7'}
           className={`w-6 h-6 transition-all duration-500 ease-in-out
-            ${animating === 'in' ? 'rotate-[360deg] scale-110 glow' : ''}
-            ${animating === 'out' ? '-rotate-[360deg] scale-90' : ''}
+            ${animating === 'in' ? 'rotate-[360deg] scale-110 glow opacity-100' : ''}
+            ${animating === 'out' ? '-rotate-[360deg] scale-90 opacity-0' : ''}
+            ${!animating && fav ? 'opacity-100' : ''}
           `}
         >
           <path

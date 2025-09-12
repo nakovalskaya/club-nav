@@ -25,12 +25,16 @@ export default function FavoriteButton({ id }: Props) {
       setTimeout(() => {
         toggleFavorite(id);
         setAnimating(null);
-        // убрано: window.dispatchEvent — событие уже шлёт стор
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('favorites-updated'));
+        }
       }, DURATION);
     } else {
       // начинаем анимацию добавления
       toggleFavorite(id);
-      // убрано: window.dispatchEvent — событие уже шлёт стор
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('favorites-updated'));
+      }
       setAnimating('in');
       setTimeout(() => setAnimating(null), DURATION);
     }
@@ -64,7 +68,7 @@ export default function FavoriteButton({ id }: Props) {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="1.2"
-            d="M11.48 3.499c.2-.58.84-.58 1.04 0l2.05 5.937h6.144c.59 0 .83.76.36 1.1l-4.97 3.61 2.05 5.94c.2.58-.48 1.06-.97.71l-4.97-3.61-4.97 3.61c-.5.35-1.17-.13-.97-.71l2.05-5.94-4.97-3.61c-.47-.34-.23-1.1.36-1.1h6.14л2.05-5.94z"
+            d="M11.48 3.499c.2-.58.84-.58 1.04 0l2.05 5.937h6.144c.59 0 .83.76.36 1.1l-4.97 3.61 2.05 5.94c.2.58-.48 1.06-.97.71l-4.97-3.61-4.97 3.61c-.5.35-1.17-.13-.97-.71l2.05-5.94-4.97-3.61c-.47-.34-.23-1.1.36-1.1h6.14l2.05-5.94z"
           />
         </svg>
       </button>

@@ -12,53 +12,55 @@ export default function FavoriteButton({ id }: Props) {
 
   const fav = favorites.includes(id);
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    // Запускаем анимацию клика на фиксированное время (мягкий зум)
-    setClickAnimating(true);
-    setTimeout(() => setClickAnimating(false), 600); // 600ms как в мягком зуме
+      // Запускаем анимацию клика на фиксированное время (мягкий зум)
+      setClickAnimating(true);
+      setTimeout(() => setClickAnimating(false), 600);
 
-    const DURATION = 600;
+      const DURATION = 600;
 
-    if (fav) {
-      // плавное снятие
-      setAnimating('out');
-      setTimeout(() => {
+      if (fav) {
+        setAnimating('out');
+        setTimeout(() => {
+          toggleFavorite(id);
+          setAnimating(null);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('favorites-updated'));
+          }
+        }, DURATION);
+      } else {
         toggleFavorite(id);
-        setAnimating(null);
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new Event('favorites-updated'));
         }
-      }, DURATION);
-    } else {
-      // плавное появление
-      toggleFavorite(id);
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new Event('favorites-updated'));
+        setAnimating('in');
+        setTimeout(() => setAnimating(null), DURATION);
       }
-      setAnimating('in');
-      setTimeout(() => setAnimating(null), DURATION);
-    }
-  }, [fav, id, toggleFavorite]);
+    },
+    [fav, id, toggleFavorite]
+  );
 
   const displayFav = fav || animating === 'out';
 
   return (
     <div className="absolute top-1.5 right-1.5 z-10">
-      {/* улучшенная тёмная подложка */}
-      <div 
+      {/* Подложка */}
+      <div
         className="absolute inset-0 w-8 h-8 rounded-full blur-[2px] z-[-1]"
         style={{
-          background: 'radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.1) 100%)'
+          background:
+            'radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.1) 100%)',
         }}
       />
 
       <button
         type="button"
         onClick={handleClick}
-        className={`w-8 h-8 flex items-center justify-center bg-transparent p-1 rounded-full
+        className={`w-8 h-8 flex items-center justify-center bg-transparent rounded-full
                    transition-opacity duration-150 ease-out hover:opacity-90 bookmark-button
                    ${clickAnimating ? 'click-animating' : ''}`}
         aria-pressed={displayFav}
@@ -66,9 +68,10 @@ export default function FavoriteButton({ id }: Props) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
+          className="bookmark-icon"
+          style={{ width: '24px', height: '24px', minWidth: '24px', minHeight: '24px' }} // фикс размера
           fill={displayFav ? '#FFD894' : 'none'}
           stroke={displayFav ? '#FFD894' : '#EBDEC8'}
-          className="w-6 h-6 bookmark-icon"
         >
           <path
             strokeLinecap="round"
@@ -80,42 +83,26 @@ export default function FavoriteButton({ id }: Props) {
       </button>
 
       <style jsx>{`
-        /* Базовые стили для закладки */
         .bookmark-icon {
           transition: all 300ms ease-in-out;
           transform: scale(1);
         }
-
-        /* Фиксированная анимация клика - мягкий зум */
         .bookmark-button {
           transform: scale(1);
         }
-        
         .click-animating .bookmark-icon {
           animation: bookmark-click-zoom 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
-
         @keyframes bookmark-click-zoom {
-          0% { 
-            transform: scale(1); 
+          0% {
+            transform: scale(1);
           }
-          40% { 
-            transform: scale(1.15); 
+          40% {
+            transform: scale(1.15);
           }
-          100% { 
-            transform: scale(1); 
+          100% {
+            transform: scale(1);
           }
-        }
-
-        /* Состояния для fill и stroke в зависимости от displayFav */
-        .bookmark-button[aria-pressed="true"] .bookmark-icon {
-          fill: #FFD894;
-          stroke: #FFD894;
-        }
-        
-        .bookmark-button[aria-pressed="false"] .bookmark-icon {
-          fill: none;
-          stroke: #EBDEC8;
         }
       `}</style>
     </div>

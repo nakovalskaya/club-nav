@@ -23,7 +23,10 @@ export default function EfiryPage() {
           <img src="/back.svg" alt="Назад" className="w-7 h-7" />
         </button>
 
-        <h1 className="text-xl font-semibold mb-4">Эфиры</h1>
+        {/* 👇 здесь вместо h1 теперь картинка */}
+        <div className="mb-6 rounded-2xl overflow-hidden">
+          <img src="/headers/efiry.jpg" alt="Эфиры" className="w-full h-auto object-cover" />
+        </div>
 
         <div className="space-y-4">
           {cards.map((card) => (

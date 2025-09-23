@@ -7,7 +7,6 @@ type Props = { id: string };
 export default function FavoriteButton({ id }: Props) {
   const favorites = useFavoritesStore((s) => s.favorites);
   const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
-  const [animating, setAnimating] = useState<null | 'in' | 'out'>(null);
   const [clickAnimating, setClickAnimating] = useState(false);
 
   const fav = favorites.includes(id);
@@ -17,34 +16,16 @@ export default function FavoriteButton({ id }: Props) {
       e.preventDefault();
       e.stopPropagation();
 
-      // Запускаем анимацию клика на фиксированное время (мягкий зум)
       setClickAnimating(true);
       setTimeout(() => setClickAnimating(false), 600);
 
-      const DURATION = 600;
-
-      if (fav) {
-        setAnimating('out');
-        setTimeout(() => {
-          toggleFavorite(id);
-          setAnimating(null);
-          if (typeof window !== 'undefined') {
-            window.dispatchEvent(new Event('favorites-updated'));
-          }
-        }, DURATION);
-      } else {
-        toggleFavorite(id);
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new Event('favorites-updated'));
-        }
-        setAnimating('in');
-        setTimeout(() => setAnimating(null), DURATION);
+      toggleFavorite(id);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('favorites-updated'));
       }
     },
-    [fav, id, toggleFavorite]
+    [id, toggleFavorite]
   );
-
-  const displayFav = fav || animating === 'out';
 
   return (
     <div className="absolute top-1.5 right-1.5 z-10">
@@ -63,21 +44,22 @@ export default function FavoriteButton({ id }: Props) {
         className={`w-8 h-8 flex items-center justify-center bg-transparent rounded-full
                    transition-opacity duration-150 ease-out hover:opacity-90 bookmark-button
                    ${clickAnimating ? 'click-animating' : ''}`}
-        aria-pressed={displayFav}
+        aria-pressed={fav}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
+          width="24"
+          height="24"
           className="bookmark-icon"
-          style={{ width: '24px', height: '24px', minWidth: '24px', minHeight: '24px' }} // фикс размера
-          fill={displayFav ? '#FFD894' : 'none'}
-          stroke={displayFav ? '#FFD894' : '#EBDEC8'}
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
             d="M6 2H18C18.5523 2 19 2.44772 19 3V22L12 19L5 22V3C5 2.44772 5.44772 2 6 2Z"
+            fill={fav ? '#FFD894' : 'none'}
+            stroke={fav ? '#FFD894' : '#EBDEC8'}
           />
         </svg>
       </button>
@@ -85,10 +67,6 @@ export default function FavoriteButton({ id }: Props) {
       <style jsx>{`
         .bookmark-icon {
           transition: all 300ms ease-in-out;
-          transform: scale(1);
-        }
-        .bookmark-button {
-          transform: scale(1);
         }
         .click-animating .bookmark-icon {
           animation: bookmark-click-zoom 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;

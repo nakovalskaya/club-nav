@@ -29,12 +29,12 @@ export default function RootLayout({
 />
       </head>
       <body>
-        <div style={{ width: '100vw', height: '100vh', overflow: 'auto' }}>
-          {children}
-          <LayoutInit /> {/* Запуск загрузки избранного */}
-          <BottomNav />
-        </div>
-      </body>
+  <div className="w-screen h-screen flex flex-col">
+    <main className="flex-1 overflow-auto">{children}</main>
+    <LayoutInit /> {/* Запуск загрузки избранного */}
+    <BottomNav />
+  </div>
+</body>
     </html>
   );
 }

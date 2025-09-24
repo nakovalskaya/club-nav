@@ -17,7 +17,7 @@ export default function FavoriteButton({ id }: Props) {
       e.stopPropagation();
 
       setClickAnimating(true);
-      setTimeout(() => setClickAnimating(false), 600);
+      setTimeout(() => setClickAnimating(false), 300);
 
       toggleFavorite(id);
       if (typeof window !== 'undefined') {
@@ -42,15 +42,15 @@ export default function FavoriteButton({ id }: Props) {
         type="button"
         onClick={handleClick}
         className={`w-8 h-8 flex items-center justify-center bg-transparent rounded-full
-                   transition-opacity duration-150 ease-out hover:opacity-90 bookmark-button
+                   transition-opacity duration-150 ease-out active:opacity-80
                    ${clickAnimating ? 'click-animating' : ''}`}
         aria-pressed={fav}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           className="bookmark-icon"
         >
           <path
@@ -66,21 +66,10 @@ export default function FavoriteButton({ id }: Props) {
 
       <style jsx>{`
         .bookmark-icon {
-          transition: all 300ms ease-in-out;
+          transition: transform 200ms ease, fill 200ms ease, stroke 200ms ease;
         }
         .click-animating .bookmark-icon {
-          animation: bookmark-click-zoom 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        @keyframes bookmark-click-zoom {
-          0% {
-            transform: scale(1);
-          }
-          40% {
-            transform: scale(1.15);
-          }
-          100% {
-            transform: scale(1);
-          }
+          transform: scale(1.15);
         }
       `}</style>
     </div>

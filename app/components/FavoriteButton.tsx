@@ -52,8 +52,8 @@ export default function FavoriteButton({ id }: Props) {
       <style jsx>{`
         .favorite-button {
           position: absolute;
-          top: 6px;
-          right: 6px;
+          top: 2px;   /* ← ближе к верхнему краю */
+          right: 2px; /* ← ближе к правому краю */
           z-index: 10;
           width: 32px;
           height: 32px;

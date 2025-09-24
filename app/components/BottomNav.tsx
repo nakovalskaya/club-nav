@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 
 export default function BottomNav() {
   const currentPath = usePathname();
@@ -23,13 +22,18 @@ export default function BottomNav() {
         const isActive = currentPath === href;
 
         return (
-          <Link
+          <a
             key={label}
             href={href}
             className={`flex flex-col items-center justify-end w-16 
                         text-[10px] select-none touch-manipulation
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
             draggable={false}
+            style={{
+              WebkitTapHighlightColor: 'transparent',
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+            }}
           >
             <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">
               {/* Градиентная подсветка */}
@@ -43,7 +47,7 @@ export default function BottomNav() {
               {/* Светящаяся аура снизу */}
               <div
                 className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
-                            w-12 h-6 bg-[#991428]/20 rounded-full blur-lg z-0
+                            w-8 h-3 bg-[#991428]/20 rounded-full blur-lg z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
@@ -61,11 +65,11 @@ export default function BottomNav() {
               />
             </div>
 
-            {/* Подпись */}
+            {/* Подпись — только цвет меняется */}
             <span className="mt-[2px] transition-colors duration-200">
               {label}
             </span>
-          </Link>
+          </a>
         );
       })}
     </nav>

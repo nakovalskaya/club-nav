@@ -15,7 +15,8 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 w-full h-20 z-50 px-2 pt-0.5 pb-6
                  flex justify-around items-end
                  bg-gradient-to-b from-black/50 to-black/20
-                 backdrop-blur-lg border-t border-white/10"
+                 backdrop-blur-lg border-t border-white/10
+                 overflow-visible" // Добавлено overflow-visible
     >
       {links.map(({ label, href, icon }) => {
         const isActive = currentPath === href;
@@ -25,12 +26,14 @@ export default function BottomNav() {
             href={href}
             className={`flex flex-col items-center justify-end w-16 
                         text-[10px] select-none touch-manipulation
+                        overflow-visible // Добавлено overflow-visible
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
             draggable={false}
             style={{
               WebkitTapHighlightColor: 'transparent',
               WebkitTouchCallout: 'none',
               WebkitUserSelect: 'none',
+              overflow: 'visible', // Добавлено в стили
             }}
           >
             <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">

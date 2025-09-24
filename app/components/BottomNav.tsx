@@ -27,19 +27,23 @@ export default function BottomNav() {
             key={label}
             href={href}
             className={`flex flex-col items-center justify-end w-16 
-                        text-[10px] select-none touch-manipulation overflow-visible
+                        text-[10px] select-none touch-manipulation
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
             draggable={false}
           >
-            <div
-              className={`relative w-10 h-10 flex items-center justify-center translate-y-1 ${
-                isActive ? 'icon-glow' : ''
-              }`}
-            >
+            <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">
               {/* Градиентная подсветка */}
               <div
                 className={`absolute inset-0 rounded-full blur-lg
                             bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30
+                            transition-opacity duration-200
+                            ${isActive ? 'opacity-100' : 'opacity-0'}`}
+              />
+
+              {/* Светящаяся аура снизу */}
+              <div
+                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
+                            w-12 h-6 bg-[#991428]/20 rounded-full blur-lg z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
@@ -58,33 +62,12 @@ export default function BottomNav() {
             </div>
 
             {/* Подпись */}
-            <span className="mt-[4px] transition-colors duration-200">
+            <span className="mt-[2px] transition-colors duration-200">
               {label}
             </span>
           </Link>
         );
       })}
-      <style jsx>{`
-        .icon-glow::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 22px;
-          height: 8px;
-          background: radial-gradient(
-            circle,
-            rgba(153, 20, 40, 0.35) 0%,
-            transparent 70%
-          );
-          filter: blur(6px);
-          border-radius: 50%;
-          pointer-events: none;
-          transition: opacity 0.2s ease;
-          opacity: 1;
-        }
-      `}</style>
     </nav>
   );
 }

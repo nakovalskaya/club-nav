@@ -44,7 +44,7 @@ export default function BottomNav() {
               {/* Светящаяся аура снизу */}
               <div
                 className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
-                            w-8 h-3 bg-[#991428]/20 rounded-full blur-lg z-0
+                w-16 h-16 bg-[#991428]/20 rounded-full blur-lg z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />

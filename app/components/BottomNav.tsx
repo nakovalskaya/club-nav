@@ -29,15 +29,7 @@ export default function BottomNav() {
                         text-[10px] select-none touch-manipulation
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
           >
-            <div className="relative w-10 h-10 flex items-center justify-center">
-              {/* Палочка сверху */}
-              <div
-                className={`absolute -top-1 left-1/2 -translate-x-1/2 
-                            w-5 h-1.5 rounded-t-xl bg-[#991428] z-20
-                            transition-opacity duration-200
-                            ${isActive ? 'opacity-100' : 'opacity-0'}`}
-              />
-
+            <div className="relative w-10 h-10 flex items-center justify-center translate-y-1">
               {/* Градиентная подсветка */}
               <div
                 className={`absolute inset-0 rounded-full blur-lg
@@ -49,7 +41,7 @@ export default function BottomNav() {
               {/* Светящаяся аура снизу */}
               <div
                 className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
-                            w-10 h-5 bg-[#991428]/20 rounded-full blur-xl z-0
+                w-8 h-3 bg-[#991428]/20 rounded-full blur-lg z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />

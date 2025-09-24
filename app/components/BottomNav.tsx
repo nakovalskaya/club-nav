@@ -1,10 +1,9 @@
 'use client';
-
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function BottomNav() {
   const currentPath = usePathname();
-
   const links = [
     { label: 'Главная', href: '/', icon: '/icons/home.svg' },
     { label: 'О клубе', href: '/about', icon: '/icons/about.svg' },
@@ -20,9 +19,8 @@ export default function BottomNav() {
     >
       {links.map(({ label, href, icon }) => {
         const isActive = currentPath === href;
-
         return (
-          <a
+          <Link
             key={label}
             href={href}
             className={`flex flex-col items-center justify-end w-16 
@@ -43,7 +41,6 @@ export default function BottomNav() {
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
-
               {/* Светящаяся аура снизу */}
               <div
                 className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
@@ -51,7 +48,6 @@ export default function BottomNav() {
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
-
               {/* Иконка фиксированного размера */}
               <img
                 src={icon}
@@ -64,12 +60,11 @@ export default function BottomNav() {
                 draggable={false}
               />
             </div>
-
             {/* Подпись — только цвет меняется */}
             <span className="mt-[2px] transition-colors duration-200">
               {label}
             </span>
-          </a>
+          </Link>
         );
       })}
     </nav>

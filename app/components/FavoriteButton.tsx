@@ -11,32 +11,24 @@ export default function FavoriteButton({ id }: Props) {
 
   const fav = favorites.includes(id);
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent | React.TouchEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const handlePress = useCallback(() => {
+    setClickAnimating(true);
+    setTimeout(() => setClickAnimating(false), 300);
 
-      setClickAnimating(true);
-      setTimeout(() => setClickAnimating(false), 300);
+    toggleFavorite(id);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('favorites-updated'));
+    }
 
-      toggleFavorite(id);
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new Event('favorites-updated'));
-      }
-
-      // Лёгкий хаптик, если поддерживается
-      if ((window as any).Telegram?.WebApp?.HapticFeedback) {
-        (window as any).Telegram.WebApp.HapticFeedback.impactOccurred('light');
-      }
-    },
-    [id, toggleFavorite]
-  );
+    if ((window as any).Telegram?.WebApp?.HapticFeedback) {
+      (window as any).Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+  }, [id, toggleFavorite]);
 
   return (
     <button
       type="button"
-      onClick={handleClick}
-      onTouchStart={handleClick}
+      onPointerDown={handlePress}
       className={`favorite-button ${clickAnimating ? 'click-animating' : ''}`}
       aria-pressed={fav}
     >
@@ -73,7 +65,15 @@ export default function FavoriteButton({ id }: Props) {
           padding: 0;
           border-radius: 50%;
           -webkit-tap-highlight-color: transparent;
-          transform: translateZ(0); /* фикс прыжков в WebView */
+          transform: translateZ(0);
+        }
+
+        /* Убираем выделение текста и всплывающее меню */
+        .favorite-button,
+        .favorite-button * {
+          -webkit-user-select: none;
+          -webkit-touch-callout: none;
+          user-select: none;
         }
 
         .star-icon {

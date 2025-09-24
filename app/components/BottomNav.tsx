@@ -27,7 +27,7 @@ export default function BottomNav() {
             key={label}
             href={href}
             className={`flex flex-col items-center justify-end w-16 
-                        text-[10px] select-none touch-manipulation
+                        text-[10px] select-none touch-manipulation overflow-visible
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
             draggable={false}
           >
@@ -43,7 +43,7 @@ export default function BottomNav() {
               {/* Светящаяся аура снизу */}
               <div
                 className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
-                            w-8 h-3 bg-[#991428]/20 rounded-full blur-lg z-0
+                            w-9 h-4 bg-[#991428]/20 rounded-full blur-xl z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
@@ -62,7 +62,7 @@ export default function BottomNav() {
             </div>
 
             {/* Подпись — только цвет меняется */}
-            <span className="mt-[2px] transition-colors duration-200">
+            <span className="mt-[4px] transition-colors duration-200">
               {label}
             </span>
           </Link>

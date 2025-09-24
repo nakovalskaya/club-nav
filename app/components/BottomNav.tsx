@@ -21,44 +21,43 @@ export default function BottomNav() {
           <a
             key={label}
             href={href}
-            className={`flex flex-col items-center text-[10px] transition-all duration-300 ease-in-out ${
-              isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'
-            }`}
+            className={`flex flex-col items-center text-[10px] 
+              ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}
+              transition-colors duration-300 ease-in-out`}
           >
-            <div className="relative w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out">
+            <div className="relative w-10 h-10 flex items-center justify-center">
               {/* Палочка сверху */}
               <div
-                className={`absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1.5 rounded-t-xl bg-[#991428] z-20 transition-all duration-300 ease-in-out ${
-                  isActive ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1.5 rounded-t-xl bg-[#991428] z-20
+                  transition-opacity duration-300 ease-in-out
+                  ${isActive ? 'opacity-100' : 'opacity-0'}`}
               ></div>
 
               {/* Градиентная подсветка */}
               <div
-                className={`absolute inset-0 rounded-full blur-lg bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30 transition-opacity duration-300 ease-in-out ${
-                  isActive ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`absolute inset-0 rounded-full blur-lg bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30
+                  transition-opacity duration-300 ease-in-out
+                  ${isActive ? 'opacity-100' : 'opacity-0'}`}
               ></div>
 
               {/* Светящаяся аура снизу */}
               <div
-                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-10 h-5 bg-[#991428]/20 rounded-full blur-xl z-0 transition-opacity duration-300 ease-in-out ${
-                  isActive ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-10 h-5 bg-[#991428]/20 rounded-full blur-xl z-0
+                  transition-opacity duration-300 ease-in-out
+                  ${isActive ? 'opacity-100' : 'opacity-0'}`}
               ></div>
 
               {/* Иконка */}
               <img
                 src={icon}
                 alt={label}
-                className={`w-5 h-5 relative z-10 transition-all duration-300 ease-in-out ${
-                  isActive
-                    ? 'filter brightness-0 invert sepia hue-rotate-[330deg] saturate-500'
-                    : ''
-                }`}
+                className={`w-5 h-5 relative z-10 
+                  transition-colors duration-300 ease-in-out
+                  ${isActive ? 'filter brightness-0 invert sepia hue-rotate-[330deg] saturate-500' : ''}`}
+                draggable={false}
               />
             </div>
-            <span className="mt-[2px] transition-all duration-300 ease-in-out">{label}</span>
+            <span className="mt-[2px] transition-colors duration-300 ease-in-out">{label}</span>
           </a>
         );
       })}

@@ -31,7 +31,7 @@ export default function BottomNav() {
                         ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
             draggable={false}
           >
-            <div className="relative w-10 h-10 flex items-center justify-center translate-y-1">
+            <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">
               {/* Градиентная подсветка */}
               <div
                 className={`absolute inset-0 rounded-full blur-lg

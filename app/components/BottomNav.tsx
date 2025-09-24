@@ -33,18 +33,18 @@ export default function BottomNav() {
               WebkitUserSelect: 'none',
             }}
           >
-            <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">
+            <div className="relative w-14 h-14 flex items-center justify-center translate-y-1">
               {/* Градиентная подсветка */}
               <div
-                className={`absolute inset-0 rounded-full blur-lg
+                className={`absolute inset-2 rounded-full blur-lg
                             bg-gradient-to-tr from-[#EC1C3B]/70 to-[#3b82f6]/30
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />
               {/* Светящаяся аура снизу */}
               <div
-                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 
-                            w-8 h-3 bg-[#991428]/20 rounded-full blur-lg z-0
+                className={`absolute bottom-1 left-1/2 -translate-x-1/2 
+                            w-10 h-4 bg-[#991428]/20 rounded-full blur-lg z-0
                             transition-opacity duration-200
                             ${isActive ? 'opacity-100' : 'opacity-0'}`}
               />

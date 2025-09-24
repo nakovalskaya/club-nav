@@ -42,7 +42,7 @@ export default function FavoriteButton({ id }: Props) {
         type="button"
         onClick={handleClick}
         className={`w-8 h-8 flex items-center justify-center bg-transparent rounded-full
-                   transition-opacity duration-150 ease-out active:opacity-80
+                   transition-opacity duration-150 ease-out
                    ${clickAnimating ? 'click-animating' : ''}`}
         aria-pressed={fav}
       >
@@ -51,25 +51,27 @@ export default function FavoriteButton({ id }: Props) {
           viewBox="0 0 24 24"
           width="20"
           height="20"
-          className="bookmark-icon"
+          className="star-icon"
         >
           <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 2H18C18.5523 2 19 2.44772 19 3V22L12 19L5 22V3C5 2.44772 5.44772 2 6 2Z"
+            d="M12 2l2.95 6 6.55.5-5 4.3 1.55 6.2-6-3.7-6 3.7 1.55-6.2-5-4.3 6.55-.5L12 2z"
             fill={fav ? '#FFD894' : 'none'}
             stroke={fav ? '#FFD894' : '#EBDEC8'}
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </button>
 
       <style jsx>{`
-        .bookmark-icon {
-          transition: transform 200ms ease, fill 200ms ease, stroke 200ms ease;
+        .star-icon {
+          transition: transform 200ms ease, fill 200ms ease, stroke 200ms ease,
+            filter 200ms ease;
         }
-        .click-animating .bookmark-icon {
+        .click-animating .star-icon {
           transform: scale(1.15);
+          filter: drop-shadow(0 0 6px rgba(255, 216, 148, 0.5));
         }
       `}</style>
     </div>

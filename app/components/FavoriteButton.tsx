@@ -42,35 +42,38 @@ export default function FavoriteButton({ id }: Props) {
         type="button"
         onClick={handleClick}
         className={`w-8 h-8 flex items-center justify-center bg-transparent rounded-full
-                   transition-opacity duration-150 ease-out
                    ${clickAnimating ? 'click-animating' : ''}`}
         aria-pressed={fav}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          className="star-icon"
-        >
-          <path
-            d="M12 2l2.95 6 6.55.5-5 4.3 1.55 6.2-6-3.7-6 3.7 1.55-6.2-5-4.3 6.55-.5L12 2z"
-            fill={fav ? '#FFD894' : 'none'}
-            stroke={fav ? '#FFD894' : '#EBDEC8'}
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <div className="w-5 h-5 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            className="star-icon"
+          >
+            <g className={clickAnimating ? 'anim-scale' : ''}>
+              <path
+                d="M12 2l2.95 6 6.55.5-5 4.3 1.55 6.2-6-3.7-6 3.7 1.55-6.2-5-4.3 6.55-.5L12 2z"
+                fill={fav ? '#FFD894' : 'none'}
+                stroke={fav ? '#FFD894' : '#EBDEC8'}
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </g>
+          </svg>
+        </div>
       </button>
 
       <style jsx>{`
         .star-icon {
-          transition: transform 200ms ease, fill 200ms ease, stroke 200ms ease,
-            filter 200ms ease;
+          transition: fill 200ms ease, stroke 200ms ease, filter 200ms ease;
         }
-        .click-animating .star-icon {
+        .anim-scale {
           transform: scale(1.15);
+          transition: transform 200ms ease;
           filter: drop-shadow(0 0 6px rgba(255, 216, 148, 0.5));
         }
       `}</style>

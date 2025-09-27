@@ -27,7 +27,7 @@ export default function BottomNav() {
             className={`flex flex-col items-center justify-end w-16 
                         text-[10px] select-none touch-manipulation
                         overflow-visible
-                        ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61] hover:text-white'}`}
+                        ${isActive ? 'text-[#EBDEC8]' : 'text-[#665d61]'}`}
             draggable={false}
             style={{
               WebkitTapHighlightColor: 'transparent',
@@ -37,7 +37,6 @@ export default function BottomNav() {
             }}
           >
             <div className="relative w-10 h-10 flex items-center justify-center translate-y-1 overflow-visible">
-              {/* Иконка фиксированного размера */}
               <img
                 src={icon}
                 alt={label}
@@ -49,7 +48,6 @@ export default function BottomNav() {
                 draggable={false}
               />
             </div>
-            {/* Подпись — только цвет меняется */}
             <span className="mt-[2px] transition-colors duration-200">
               {label}
             </span>
